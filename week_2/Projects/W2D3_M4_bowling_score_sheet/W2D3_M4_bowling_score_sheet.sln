@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W2D3_M4_bowling_score_sheet", "W2D3_M4_bowling_score_sheet\W2D3_M4_bowling_score_sheet.csproj", "{0714760D-EEF2-4A95-B347-1BDAC4B49C8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0714760D-EEF2-4A95-B347-1BDAC4B49C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0714760D-EEF2-4A95-B347-1BDAC4B49C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0714760D-EEF2-4A95-B347-1BDAC4B49C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0714760D-EEF2-4A95-B347-1BDAC4B49C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
