@@ -36,7 +36,7 @@ namespace W2D4_mission_2_battle
 
             while (HP > 0)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < party.Count; i++)
                 {
                     if (HP > 0)
                     {
@@ -49,7 +49,7 @@ namespace W2D4_mission_2_battle
 
                         HP -= damage;
 
-                        if (HP < 0)
+                        if (HP < 1)
                         {
                             HP = 0;
                             lastHit = String.Join(", ", party[i]);
@@ -80,18 +80,21 @@ namespace W2D4_mission_2_battle
 
             Console.WriteLine($"The basilisk has {HP} HP.");
 
-            int dice4 = 0;
+            int dice4;
+            int partyIndex;
+            int dice20;
+            int constitution;
 
             while (HP > 0)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < party.Count; i++)
                 {
                     if (HP > 0)
                     {
 
                         dice4 = random.Next(1, 5);
-                        Console.WriteLine(dice4);
-                        damage += dice4;
+                        //Console.WriteLine(dice4);
+                        damage = dice4;
 
                         HP -= damage;
 
@@ -103,17 +106,43 @@ namespace W2D4_mission_2_battle
 
                         Console.WriteLine($"{party[i]} hits the basilisk for {damage} damage. Basilisk has {HP} HP left.");
 
-                        damage = 0;
+                        if (i == party.Count - 1 && HP > 0)
+                        {
+                            constitution = 5;
+                            partyIndex = random.Next(0, party.Count);
 
+                            Console.WriteLine($"The basilisk stares at {party[partyIndex]}, it prepares it's petrifying gaze and {party[partyIndex]} starts to run to get out of it's reach");
+
+                            dice20 = random.Next(1, 21);
+                            constitution += dice20;
+
+                            Console.Write($"{party[partyIndex]} runs {constitution} steps away ");
+                            if (constitution < 12)
+                            {
+                                Console.WriteLine($"but the basilisk range is greter than that and she quickly gets turned into stone.");
+                                party.Remove(party[partyIndex]);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"and makes it out of the basilisks range. Our hero manages to avoid beeing turned into stone.");
+                            }
+
+                            if (party.Count == 0)
+                            {
+                                Console.WriteLine("All of our heroes are now turned into stone and the story ends here. Noone lives to tell the story of our adventurers heroic fight and ?? defeat.");
+                            }
+
+                            //Console.WriteLine(party.Count);
+                        }
+
+                        if(HP == 0)
+                        {
+                            Console.WriteLine($"Hurray! Our heroes made it! They have defeated the basilisk and returns to their village. ");
+                        }
 
                     }
                 }
             }
-
-
-
-
-
         }
     }
 }
