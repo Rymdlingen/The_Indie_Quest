@@ -116,7 +116,7 @@ namespace W2D4_mission_2_battle
                             dice20 = random.Next(1, 21);
                             constitution += dice20;
 
-                            Console.Write($"{party[partyIndex]} runs {constitution} steps away ");
+                            Console.Write($"{party[partyIndex]} runs {dice20} steps away ");
                             if (constitution < 12)
                             {
                                 Console.WriteLine($"but the basilisk range is greter than that and she quickly gets turned into stone.");
