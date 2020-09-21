@@ -7,13 +7,21 @@ namespace W2D4_mission_2_battle
     {
         static void Main(string[] args)
         {
-            Console.WriteLine();
-            Console.WriteLine("-----------------------------------------------");
+            //Console.WriteLine();
+            //Console.WriteLine("-----------------------------------------------");
             var party = new List<string> { "Johanna", "Sandra", "Linn", "Sallie" };
             var partyString = String.Join(", ", party);
 
-            Console.WriteLine($"Four brave warriors ({partyString}) are out on an adventure. When they have been wandering a while without much excitement they notice a cave. {party[0]} challanges the others to enter. 'I'm not scared!' says {party[1]}, 'Me neither!' {party[2]} agrees. '....voff' says {party[3]} and into the cave they go!");
-            Console.WriteLine("The brave adventurers explore the cave for hours and in an unusally dark and big room they encounter a terrifying basilisk.");
+            Console.WriteLine("This is a story about three sisters and their dog");
+            Console.WriteLine();
+            Console.WriteLine($"Four brave sisters ({partyString}) are out on an adventure. When they have been wandering a while without much excitement they notice a cave.");
+            Console.WriteLine($"{ party[0]} challanges the others to enter. 'I'm not scared!' says {party[1]}, 'Me neither!' {party[2]} agrees. '....voff' says {party[3]} and into the cave they go!");
+            Console.WriteLine();
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            Console.WriteLine("The brave adventurers explore the cave for hours and in an unusally dark and airy part of the cave they encounter a terrifying basilisk.");
+            Console.WriteLine($"The three sisters simultanusly draw their greatswords, {party[3]} growls and looks ready to attack.");
+            Console.WriteLine();
 
             var random = new Random();
             int dice8 = 0;
@@ -27,7 +35,6 @@ namespace W2D4_mission_2_battle
             }
 
             Console.WriteLine($"The basilisk has {HP} HP.");
-            Console.WriteLine($"The three sisters simultanusly draw their greatswords, {party[3]} growls and looks ready to attack.");
             Console.WriteLine();
 
             int dice6 = 0;
@@ -64,10 +71,19 @@ namespace W2D4_mission_2_battle
                 }
             }
 
-            Console.WriteLine($"{lastHit} hit the basilisk back to the deapths of the cave and all of our heroes safely make it out to the surface again. They were celebrated for weeks, becuse noone had before achived what they had, noone hade before faced the mighty basilisk and lived to tell about it! ... ");
-
             Console.WriteLine();
-            Console.WriteLine($"{party[0]} wakes up from her daydream about defensless basilisks and greatswords. She heres {party[3]} barks and makes our adventurers aware of a sign that reads \"***Danger***\". With the daydreams fresh in her mind {party[0]} tells the others about all the glory that might await them and convinces them to venture into the cave.");
+            Console.WriteLine($"{lastHit} hits the basilisk back to the deapths of the cave and all of our heroes safely make it out to the surface again. They were celebrated for weeks, becuse no one had before achived what they had, no one hade before faced the mighty basilisk and lived to tell about it! ... ");
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            Console.WriteLine();
+            Console.WriteLine($"{party[0]} wakes up from her daydream about defensless basilisks and greatswords. She hear {party[3]} barking, making our adventurers aware of a sign almost completely hidden behond some leaves. The sign reads:");
+            Console.WriteLine();
+            Console.WriteLine("\"***Danger***\".");
+            Console.WriteLine("\"Extremely dangerous caves ahead!\".");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"With the daydreams fresh in her mind {party[0]} tells the others about all the glory that might await them and convinces them to venture into the cave.");
+            Console.WriteLine($"Just like in {party[0]}s daydream our adventurers soon encounter a basilisk!");
 
             HP = 16;
 
@@ -79,6 +95,7 @@ namespace W2D4_mission_2_battle
             }
 
             Console.WriteLine($"The basilisk has {HP} HP.");
+            Console.WriteLine();
 
             int dice4;
             int partyIndex;
@@ -124,20 +141,20 @@ namespace W2D4_mission_2_battle
                             }
                             else
                             {
-                                Console.WriteLine($"and makes it out of the basilisks range. Our hero manages to avoid beeing turned into stone.");
+                                Console.WriteLine($"and makes it out of the basilisks range. Our adventurer manages to avoid beeing turned into stone.");
                             }
 
                             if (party.Count == 0)
                             {
-                                Console.WriteLine("All of our heroes are now turned into stone and the story ends here. Noone lives to tell the story of our adventurers heroic fight and ?? defeat.");
+                                Console.WriteLine("All of our adventurers are now turned into stone and the story ends here. Noone lives to tell the story of our adventurers heroic fight and terrible defeat.");
                             }
 
-                            //Console.WriteLine(party.Count);
+                            Console.WriteLine();
                         }
 
                         if (HP == 0)
                         {
-                            Console.WriteLine($"Hurray! Our heroes made it! They have defeated the basilisk and returns to their village. ");
+                            Console.WriteLine($"Hurray! Our adventurers made it! They have defeated the basilisk and are celebrated as heroes for the rest of their lives!");
                         }
 
                     }
@@ -146,8 +163,3 @@ namespace W2D4_mission_2_battle
         }
     }
 }
-
-//Johanna wakes up from her daydreams about defensless basilisks and greatswords...
-//they are saved if they manage to run 12 or more steps away before the gaze hits
-//något om att den fjärde är en hund?
-//väldigt osanolik grej om att de hittar något blankt och basilisken förstenar sig själv?
