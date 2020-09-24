@@ -25,7 +25,7 @@ namespace W3D3_BOSS_adventure_map
             for (var y = 1; y < height - 1; y++)
             {
 
-                if (random.Next(2) == 0)
+                if (riverLast < width - 3 && random.Next(2) == 0)
                 {
                     riverLast += 1;
                 }
@@ -72,7 +72,7 @@ namespace W3D3_BOSS_adventure_map
 
             //road (h) end
 
-                int bridgePosition = 0;
+            int bridgePosition = 0;
 
             //drawing
             for (int y = 0; y <= height; y++)
@@ -102,6 +102,19 @@ namespace W3D3_BOSS_adventure_map
                         continue;
                     }
                     //border end
+
+                    //Title start
+                    string title = "ADVENTURE MAP";
+
+                    if (y == 1 && x == (width) / 2 - title.Length / 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(title);
+                        x += title.Length - 1;
+                        continue;
+                    }
+
+                    //Title end
 
                     //Road(H) start
                     if (y == roadList[x - 1])
@@ -148,38 +161,106 @@ namespace W3D3_BOSS_adventure_map
 
 
                     //Bridge start
-                    if ((x + 2 == riverList[y] && y + 1 == roadList[x]) || (x + 2 == bridgePosition && y - 1 == roadList[x]))
+
+                    if (x + 2 == riverList[y] && y + 1 == roadList[x])
                     {
-                        if (x + 2 == riverList[y] && y + 1 == roadList[x])
-                        {
-                            bridgePosition = riverList[y];
+                        bridgePosition = riverList[y];
+                        Console.ForegroundColor = ConsoleColor.White;
 
-                            for (int i = 0; i < 7; i++)
+                        for (int i = 0; i < 7; i++)
+                        {
+                            if (x + i == width)
                             {
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("=");
+                                x += i - 1;
+                                break;
+
+                            }
+
+                            Console.Write("=");
+
+                            if (i == 6)
+                            {
+                                x += 6;
                             }
                         }
-
-                        if (x + 2 == bridgePosition && y - 1 == roadList[x])
-                        {
-                            for (int i = 0; i < 7; i++)
-                            {
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("=");
-                            }
-                        }
-
-                        x += 6;
                         continue;
                     }
 
-                    
+                    if (x + 2 == bridgePosition && y - 1 == roadList[x])
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        for (int i = 0; i < 7; i++)
+                        {
+                            if (x + i == width)
+                            {
+                                x += i - 1;
+                                break;
+                            }
+
+                            Console.Write("=");
+
+                            if (i == 6)
+                            {
+                                x += 6;
+                            }
+
+                        }
+                        continue;
+                    }
 
                     //Bridge end
 
 
                     //river start
+                    if (y == 1 && x == riverList[y - 1] + 1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+
+                        for (var i = 0; i < 2; i++)
+                        {
+                            if (x - 1 < riverList[y])
+                            {
+                                Console.Write(@"(");
+                                continue;
+                            }
+
+                            if (x - 1 > riverList[y])
+                            {
+                                Console.Write(")");
+                                continue;
+                            }
+
+                            Console.Write("|");
+                            continue;
+                        }
+                        x++;
+                        continue;
+                    }
+
+                    if (y == 1 && x == riverList[y - 1] + 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+
+                        if (x - 2 < riverList[y])
+                        {
+                            Console.Write(@"(");
+                            continue;
+                        }
+
+                        if (x - 2 > riverList[y])
+                        {
+                            Console.Write(")");
+                            continue;
+                        }
+
+                        Console.Write("|");
+                        continue;
+
+
+                    }
+
+
                     if (x == riverList[y - 1])
                     {
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
