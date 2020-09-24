@@ -22,11 +22,17 @@ namespace W3D3_BOSS_adventure_map
                 {
                     if (random.Next(2) == 0)
                     {
-                        lastPosition++;
+                        if (lastPosition < endX)
+                        {
+                            lastPosition++;
+                        }
                     }
                     else
                     {
-                        lastPosition--;
+                        if (lastPosition > startX)
+                        {
+                            lastPosition--;
+                        }
                     }
                 }
 
@@ -173,7 +179,7 @@ namespace W3D3_BOSS_adventure_map
                     //Title start
                     string title = "ADVENTURE MAP";
 
-                    if (y == 1 && x == (width) / 2 - title.Length / 2)
+                    if (y == 1 && x == width / 2 - title.Length / 2)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write(title);
@@ -195,6 +201,11 @@ namespace W3D3_BOSS_adventure_map
                     //Wall start
                     if (x == wallListOfCurves[y - 1])
                     {
+                        if (y == 1 && x + 1 == width / 2 - title.Length / 2)
+                        {
+                            continue;
+                        }
+
                         Console.ForegroundColor = ConsoleColor.DarkGray;
 
                         //if tower needs to be drawn
@@ -219,7 +230,6 @@ namespace W3D3_BOSS_adventure_map
 
                     //Forest start
                     string forestSymbol = "AT()&!Å";
-
                     if (x > 0 && x < width / 4)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -375,7 +385,7 @@ namespace W3D3_BOSS_adventure_map
 
         static void Main(string[] args)
         {
-            DrawMap(100, 40);
+            DrawMap(60, 20);
         }
     }
 }
