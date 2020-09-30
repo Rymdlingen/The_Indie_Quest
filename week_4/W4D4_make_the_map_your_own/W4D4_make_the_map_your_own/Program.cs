@@ -39,9 +39,7 @@ namespace W3D3_BOSS_adventure_map
             }
 
             listOfCurves.Add(lastPosition);
-
             return listOfCurves;
-
         }
 
         /* Function for generating a character when drawing a vertical curve
@@ -147,7 +145,6 @@ namespace W3D3_BOSS_adventure_map
                         {
                             roadLastYPosition -= 1;
                         }
-
                     }
                 }
 
@@ -186,8 +183,27 @@ namespace W3D3_BOSS_adventure_map
             //Drawing phase
 
             //Random squirrel
-            bool squirrel = random.Next(1) == 0;
+            bool squirrel = random.Next(10) == 0;
             int squirrelYPosition = random.Next(1, height - 4);
+
+            //Random tower
+            bool tower = random.Next(10) == 0;
+            int towerYPosition = 0;
+            //Above or below horizental road
+            if (random.Next(2) == 0)
+            {
+                if (roadListofCurve[width - 2] > 10)
+                {
+                    towerYPosition = random.Next(1, roadListofCurve[width - 2] - 9);
+                }
+            }
+            else
+            {
+                if (roadListofCurve[width - 2] < height - 10)
+                {
+                    towerYPosition = random.Next(roadListofCurve[width - 2] + 1, height - 8);
+                }
+            }
 
             //variable used to reset x on every row
             int resetXForNewRow = 0;
@@ -212,7 +228,6 @@ namespace W3D3_BOSS_adventure_map
                         Console.Write("+");
                         continue;
                     }
-
                     //left and right side
                     if ((x == 0 || x == width) && (y > 0 && y < height))
                     {
@@ -220,7 +235,6 @@ namespace W3D3_BOSS_adventure_map
                         Console.Write("|");
                         continue;
                     }
-
                     //top and bottom row
                     if ((x > 0 && x < width) && (y == 0 || y == height))
                     {
@@ -243,27 +257,27 @@ namespace W3D3_BOSS_adventure_map
                     }
                     //Title end
 
+
                     //Squirrel start
                     if (width >= 59 && height >= 19)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         if (squirrel)
                         {
-
-                            if (x == 4 && y == squirrelYPosition)
+                            if (x == 5 && y == squirrelYPosition)
                             {
-                                Console.Write(" ‚,");
-                                x += 2;
+                                Console.Write("‚,");
+                                x++;
                                 continue;
                             }
-                            if (x == 1 && y == squirrelYPosition + 1)
+                            if (x == 2 && y == squirrelYPosition + 1)
                             {
-                                Console.Write(" /)/");
+                                Console.Write("/)/");
                                 Console.ForegroundColor = ConsoleColor.White;
                                 Console.Write("∞");
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.Write(@"\");
-                                x += 5;
+                                x += 4;
                                 continue;
                             }
                             if (x == 1 && y == squirrelYPosition + 2)
@@ -272,44 +286,99 @@ namespace W3D3_BOSS_adventure_map
                                 x += 6;
                                 continue;
                             }
-
                         }
                     }
                     //Squirrel end
 
-                    //Tower start DO THIS TODAY!!!
-                    if (width >= 59 && height >= 19)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        if (squirrel)
-                        {
 
-                            if (x == 4 && y == squirrelYPosition)
+                    //Tower start
+                    if (riverListOfCurves.Contains(width - 10))
+                    { //If the river goes to far to the right at any point the tower won't be drawn
+                    }
+                    else if (width >= 79 && height >= 29 && towerYPosition != 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        if (tower)
+                        {
+                            if (x == width - 3 && y == towerYPosition)
                             {
-                                Console.Write(" ‚,");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                Console.Write("~");
+                                continue;
+                            }
+                            if (x == width - 1 && y == towerYPosition + 1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                Console.Write("~");
+                                continue;
+                            }
+                            if (x == width - 4 && y == towerYPosition + 2)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                Console.Write(@"/\n");
                                 x += 2;
                                 continue;
                             }
-                            if (x == 1 && y == squirrelYPosition + 1)
+                            if (x == width - 6 && y == towerYPosition + 3)
                             {
-                                Console.Write(" /)/");
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("∞");
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                Console.Write(@"„/");
                                 Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("*°");
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
                                 Console.Write(@"\");
-                                x += 5;
+                                x += 4;
                                 continue;
                             }
-                            if (x == 1 && y == squirrelYPosition + 2)
+                            if (x == width - 7 && y == towerYPosition + 4)
                             {
-                                Console.Write(@"(_(,”,)");
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                Console.Write(@"/");
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                Console.Write("|");
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                Console.Write("____");
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                Console.Write("|");
                                 x += 6;
                                 continue;
                             }
-
+                            if (x == width - 7 && y == towerYPosition + 5)
+                            {
+                                Console.Write("l_|");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("•°");
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                Console.Write("|");
+                                x += 5;
+                                continue;
+                            }
+                            if (x == width - 5 && y == towerYPosition + 6)
+                            {
+                                Console.Write("|");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("~ ");
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                Console.Write("|");
+                                x += 3;
+                                continue;
+                            }
+                            if (x == width - 5 && y == towerYPosition + 7)
+                            {
+                                Console.Write("|");
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                Console.Write("n");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("°");
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                Console.Write("|");
+                                x += 3;
+                                continue;
+                            }
                         }
                     }
                     //Tower end
+
 
                     //Road (horizontal) start
                     if (y == roadListofCurve[x - 1])
@@ -320,6 +389,7 @@ namespace W3D3_BOSS_adventure_map
                     }
                     //Road (horizontal) end
 
+
                     //Wall start
                     if (x == wallListOfCurves[y - 1])
                     {
@@ -328,10 +398,8 @@ namespace W3D3_BOSS_adventure_map
                             Console.Write(" ");
                             continue;
                         }
-
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-
                         //if tower needs to be drawn
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         if (y - 1 == roadListofCurve[x - 1] || y + 1 == roadListofCurve[x - 1])
                         {
                             Console.Write("{ }");
@@ -350,6 +418,7 @@ namespace W3D3_BOSS_adventure_map
                         continue;
                     }
                     //Wall end
+
 
                     //Pond start
                     string pondSymbols = "   o≈≈≈≈~~~~";
@@ -378,6 +447,7 @@ namespace W3D3_BOSS_adventure_map
                                 Console.Write(pondSymbols[random.Next(pondSymbols.Length)]);
                                 density++;
                             }
+
                             x++;
                         }
                     }
@@ -389,7 +459,6 @@ namespace W3D3_BOSS_adventure_map
                     if (x > 0 && x < width / 4)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
-
                         if (random.Next(x) <= 1)
                         {
                             Console.Write(forestSymbol[random.Next(forestSymbol.Length)]);
@@ -404,7 +473,6 @@ namespace W3D3_BOSS_adventure_map
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write("€");
-
                         continue;
                     }
                     //Road (vertical) next to river end
@@ -415,7 +483,6 @@ namespace W3D3_BOSS_adventure_map
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write("s");
-
                         continue;
                     }
                     //Road (vertical) next to wall end
@@ -437,7 +504,7 @@ namespace W3D3_BOSS_adventure_map
                                 x += bridgeWidth - 1;
                                 break;
                             }
-
+                            //bridge symbol
                             Console.Write("x");
 
                             if (bridgeWidth == 6)
@@ -445,6 +512,7 @@ namespace W3D3_BOSS_adventure_map
                                 x += 6;
                             }
                         }
+
                         continue;
                     }
 
@@ -452,7 +520,6 @@ namespace W3D3_BOSS_adventure_map
                     if (x + 2 == bridgeXPosition && y - 1 == roadListofCurve[x])
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-
                         for (int bridgeWidth = 0; bridgeWidth < 7; bridgeWidth++)
                         {
                             //if bridge is close to edge this stops the drawing of the bridge
@@ -468,8 +535,8 @@ namespace W3D3_BOSS_adventure_map
                             {
                                 x += 6;
                             }
-
                         }
+
                         continue;
                     }
                     //Bridge end
@@ -481,7 +548,6 @@ namespace W3D3_BOSS_adventure_map
                     if (y == 1 && x == riverListOfCurves[y - 1] + 1)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-
                         for (var twoRiverSymbols = 0; twoRiverSymbols < 2; twoRiverSymbols++)
                         {
                             if (x - 1 < riverListOfCurves[y])
@@ -507,7 +573,6 @@ namespace W3D3_BOSS_adventure_map
                     if (y == 1 && x == riverListOfCurves[y - 1] + 2)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-
                         if (x - 2 < riverListOfCurves[y])
                         {
                             Console.Write(@"(");
@@ -528,7 +593,6 @@ namespace W3D3_BOSS_adventure_map
                     if (x == riverListOfCurves[y - 1])
                     {
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-
                         for (var riverWidth = 0; riverWidth < 3; riverWidth++)
                         {
                             Console.Write(Characters(x, y, riverListOfCurves, "|", "(", ")"));
@@ -536,7 +600,6 @@ namespace W3D3_BOSS_adventure_map
 
                         x += 2;
                         continue;
-
                     }
                     //River end
 
@@ -559,7 +622,6 @@ namespace W3D3_BOSS_adventure_map
                                 continue;
                             }
                         }
-
                         //density 2
                         if (((x > cityX && x < cityX + cityX / 4) || (x > cityX * 2 - cityX / 4 && x < cityX * 2)) && y >= cityY + cityY / 3 && y <= cityY * 2)
                         {
@@ -570,7 +632,6 @@ namespace W3D3_BOSS_adventure_map
                                 continue;
                             }
                         }
-
                         //density 3 & 4
                         if (x >= cityX + cityX / 4 && x <= cityX * 2 - cityX / 4)
                         {
@@ -592,6 +653,7 @@ namespace W3D3_BOSS_adventure_map
                         }
                     }
                     //City end
+
 
                     //City road start
                     if (roadListofCurve[width / 2] > height / 2 && x == width / 2 - 1 && y > height / 2 - 1 && y < roadListofCurve[width / 2])
@@ -622,7 +684,6 @@ namespace W3D3_BOSS_adventure_map
                             Console.Write("•");
                             x++;
                         }
-
                         continue;
                     }
                     //City road end
@@ -632,7 +693,6 @@ namespace W3D3_BOSS_adventure_map
                     if (x > width - width / 10 && x < width && x > riverListOfCurves[y - 1] && width > height)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-
                         if (random.Next(width + 1 - x) == 0)
                         {
                             Console.Write(mountainSymbols[random.Next(mountainSymbols.Length)]);
@@ -641,14 +701,15 @@ namespace W3D3_BOSS_adventure_map
                         {
                             Console.Write(" ");
                         }
+
                         continue;
                     }
                     //Mountains end
 
+
                     //Empty space
                     Console.Write(" ");
                 }
-
                 //Next row
                 resetXForNewRow = 0;
                 Console.WriteLine();
@@ -658,7 +719,7 @@ namespace W3D3_BOSS_adventure_map
 
         static void Main(string[] args)
         {
-            DrawMap(60, 20);
+            DrawMap(90, 30);
         }
     }
 }
