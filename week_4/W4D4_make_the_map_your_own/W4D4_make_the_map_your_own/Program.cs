@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+//System.Console.CursorLeft james suggestion to use that to animate the squirrel
+
 namespace W3D3_BOSS_adventure_map
 {
     class Program
