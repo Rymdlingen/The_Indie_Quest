@@ -7,7 +7,7 @@ namespace W3D3_BOSS_adventure_map
 {
     class Program
     {
-        /* function for generating vertical curves 
+        /* Method for generating vertical curves 
            (width (x) value for start of curve and minimum (x) value for curve, max (x) value for curve, 
            chanse for curve to appear written in % (0-100), how high the the map is (y)) */
         static List<int> GenerateCurve(int startX, int endX, int curveChansePercent, int heightOfMap)
@@ -44,7 +44,7 @@ namespace W3D3_BOSS_adventure_map
             return listOfCurves;
         }
 
-        /* Function for generating a character when drawing a vertical curve
+        /* Method for generating a character when drawing a vertical curve
          
            (width (x), height (y), name of list containing the curve, symbol for no curve (straight down),
            symbol for curve to the right, symbol for curve to the left)*/
@@ -71,7 +71,7 @@ namespace W3D3_BOSS_adventure_map
             return symbol;
         }
 
-        /* Function to draw the map
+        /* Method to draw the map
          
           (width (x) of map - a number from 15 and higher (including border),
            height (y) of map - a number from 7 and higher (including border)*/
@@ -85,11 +85,11 @@ namespace W3D3_BOSS_adventure_map
             //Calculating phase
 
             //Wall start
-            List<int> wallListOfCurves = GenerateCurve(width / 4, width / 3, 100, height);
+            List<int> wallListOfCurves = GenerateCurve(width / 4, width / 3, 40, height);
             //Wall end
 
             //River start
-            List<int> riverListOfCurves = GenerateCurve(width - width / 4, width - 3, 99, height);
+            List<int> riverListOfCurves = GenerateCurve(width - width / 4, width - 3, 80, height);
             //River end
 
             //Road (horizontal) start
@@ -100,7 +100,7 @@ namespace W3D3_BOSS_adventure_map
             for (int x = 1; x < width - 1; x++)
             {
                 //straight road when crossing wall
-                if (x + 2 == wallListOfCurves[roadLastYPosition - 2] || x + 2 == wallListOfCurves[roadLastYPosition - 1] || x + 2 == wallListOfCurves[roadLastYPosition - 3])
+                if (x + 2 == wallListOfCurves[roadLastYPosition] || x + 2 == wallListOfCurves[roadLastYPosition - 1] || x + 2 == wallListOfCurves[roadLastYPosition + 1])
                 {
                     for (int straightRoad = 0; straightRoad < 5; straightRoad++)
                     {
@@ -297,7 +297,7 @@ namespace W3D3_BOSS_adventure_map
                     if (riverListOfCurves.Contains(width - 10))
                     { //If the river goes to far to the right at any point the tower won't be drawn
                     }
-                    else if (width >= 79 && height >= 29 && towerYPosition != 0)
+                    else if (width >= 79 && height >= 24 && towerYPosition != 0)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         if (tower)
@@ -432,9 +432,9 @@ namespace W3D3_BOSS_adventure_map
                         for (int pondSize = 0; pondSize < y - 2; pondSize++)
                         {
                             //if pond is close to edge this stops the drawing of the bridge
-                            if (pondSize == width - 1)
+                            if (x == width - 1)
                             {
-                                x = pondSize;
+                                x = width - 1;
                                 break;
                             }
                             if (random.Next(40) == 0 && swan <= 1)
@@ -695,7 +695,7 @@ namespace W3D3_BOSS_adventure_map
                     if (x > width - width / 10 && x < width && x > riverListOfCurves[y - 1] && width > height)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        if (random.Next(width + 1 - x) == 0)
+                        if (random.Next(width - x) <= 0)
                         {
                             Console.Write(mountainSymbols[random.Next(mountainSymbols.Length)]);
                         }
@@ -703,7 +703,6 @@ namespace W3D3_BOSS_adventure_map
                         {
                             Console.Write(" ");
                         }
-
                         continue;
                     }
                     //Mountains end
@@ -721,7 +720,7 @@ namespace W3D3_BOSS_adventure_map
 
         static void Main(string[] args)
         {
-            DrawMap(90, 30);
+            DrawMap(80, 25);
         }
     }
 }
