@@ -305,7 +305,7 @@ namespace W3D3_BOSS_adventure_map
         {
             Console.Clear();
 
-            DrawMap(20, 10);
+            DrawMap(60, 20);
         }
     }
 }

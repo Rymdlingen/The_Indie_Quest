@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Insertion_sort", "Insertion_sort\Insertion_sort.csproj", "{BD755309-BAEE-4DBE-B28F-F34C6310EDBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD755309-BAEE-4DBE-B28F-F34C6310EDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD755309-BAEE-4DBE-B28F-F34C6310EDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD755309-BAEE-4DBE-B28F-F34C6310EDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD755309-BAEE-4DBE-B28F-F34C6310EDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
