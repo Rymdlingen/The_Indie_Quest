@@ -5,297 +5,6 @@ namespace W3D1_bowling_pins
 {
     class Program
     {
-        static string Pin(bool knocked)
-        {
-            // Returns a different symbol if the pin is standing or not
-            string symbol;
-            if (knocked == true)
-            {
-                symbol = "O";
-            }
-            else
-            {
-                symbol = " ";
-            }
-            return symbol;
-        }
-
-        static int KnockedPinOnPath(int path, List<bool> pinsStanding)
-        {
-            // Calculates how many pins get knocked down
-            var random = new Random();
-
-            // Randomly changes path if the player dosent hit straight
-            if (random.Next(10) == 0)
-            {
-                path++;
-            }
-
-            if (random.Next(10) == 0)
-            {
-                path--;
-            }
-
-            // Path 1
-            if (path == 1 && pinsStanding[6] == true)
-            {
-                int knockedPinsCount = 1;
-                pinsStanding[6] = false;
-
-                for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                {
-                    int newPath = random.Next(5);
-                    if (newPath < 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                    }
-                    else if (newPath > 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                    }
-                    else
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                    }
-                }
-
-                return knockedPinsCount;
-            }
-            // Path 2
-            else if (path == 2 && pinsStanding[3] == true)
-            {
-                int knockedPinsCount = 1;
-                pinsStanding[3] = false;
-
-                for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                {
-                    int newPath = random.Next(5);
-                    if (newPath < 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                    }
-                    else if (newPath > 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                    }
-                    else
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                    }
-                }
-
-                return knockedPinsCount;
-            }
-            // Path 3
-            else if (path == 3)
-            {
-                if (pinsStanding[1] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[1] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-                else if (pinsStanding[7] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[7] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-            }
-            // Path 4
-            else if (path == 4)
-            {
-                if (pinsStanding[0] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[0] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-                else if (pinsStanding[4] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[4] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-            }
-            // Path 5
-            else if (path == 5)
-            {
-                if (pinsStanding[2] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[2] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-                else if (pinsStanding[8] == true)
-                {
-                    int knockedPinsCount = 1;
-                    pinsStanding[8] = false;
-
-                    for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                    {
-                        int newPath = random.Next(5);
-                        if (newPath < 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                        }
-                        else if (newPath > 2)
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                        }
-                        else
-                        {
-                            knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                        }
-                    }
-
-                    return knockedPinsCount;
-                }
-            }
-            // Path 6
-            else if (path == 6 && pinsStanding[5] == true)
-            {
-                int knockedPinsCount = 1;
-                pinsStanding[5] = false;
-
-                for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                {
-                    int newPath = random.Next(5);
-                    if (newPath < 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                    }
-                    else if (newPath > 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                    }
-                    else
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                    }
-                }
-
-                return knockedPinsCount;
-            }
-            // Path 7
-            else if (path == 7 && pinsStanding[9] == true)
-            {
-                int knockedPinsCount = 1;
-                pinsStanding[9] = false;
-
-                for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
-                {
-                    int newPath = random.Next(5);
-                    if (newPath < 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
-                    }
-                    else if (newPath > 2)
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
-                    }
-                    else
-                    {
-                        knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
-                    }
-                }
-                // Total knocked pins in one roll
-                return knockedPinsCount;
-            }
-            // Miss
-            return 0;
-        }
-
         static void Main(string[] args)
         {
             var random = new Random();
@@ -344,6 +53,17 @@ namespace W3D1_bowling_pins
                 Console.WriteLine("Frame {0}", frame + 1);
 
                 int rolls = 0;
+
+                // Calculating this frames total knocked pins
+                int knockedPins = allRolls[frame][rolls];
+                if (allRolls[frame].Length == 2)
+                {
+                    knockedPins += allRolls[frame][rolls + 1];
+                }
+                if (allRolls[frame].Length == 3)
+                {
+                    knockedPins += allRolls[frame][rolls + 1] + allRolls[frame][rolls + 2];
+                }
 
                 // Displaying a frame with 1 roll
                 if (allRolls[frame].Length == 1)
@@ -433,6 +153,7 @@ namespace W3D1_bowling_pins
                         rolls++;
                     }
                 }
+                Console.WriteLine($"Knocked pins: {knockedPins}");
                 Console.WriteLine();
             }
         }
