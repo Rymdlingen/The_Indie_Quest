@@ -9,16 +9,16 @@ namespace W3D3_BOSS_adventure_map
         static void GenerateRoad(bool[,] roads, int x, int y, int direction)
         {
 
-            int height = roads.GetLength(0);
-            int width = roads.GetLength(1);
+            int width = roads.GetLength(0);
+            int height = roads.GetLength(1);
 
-            while (x <= width && y <= height && x >= 0 && y >= 0)
+            while (x < width && y < height && x >= 0 && y >= 0)
             {
-                roads[y, x] = true;
+                roads[x, y] = true;
 
                 if (direction == 0)
                 {
-                    x++;
+                    y--;
                 }
 
                 if (direction == 1)
@@ -33,7 +33,7 @@ namespace W3D3_BOSS_adventure_map
 
                 if (direction == 3)
                 {
-                    y--;
+                    x++;
                 }
 
             }
@@ -52,7 +52,7 @@ namespace W3D3_BOSS_adventure_map
 
             if (up <= 6)
             {
-                GenerateRoad(roads, x, y, 3);
+                GenerateRoad(roads, x, y, 0);
             }
 
             if (down <= 6)
@@ -67,7 +67,7 @@ namespace W3D3_BOSS_adventure_map
 
             if (right <= 6)
             {
-                GenerateRoad(roads, x, y, 0);
+                GenerateRoad(roads, x, y, 3);
             }
 
 
@@ -88,11 +88,11 @@ namespace W3D3_BOSS_adventure_map
 
             //Roads start
 
-            var roads = new bool[height, width];
+            var roads = new bool[width + 1, height + 1];
 
-            GenerateIntersection(roads, random.Next(0, height + 1), random.Next(0, width + 1));
-            //GenerateIntersection(roads, random.Next(0, width + 1), random.Next(0, height + 1));
-            //GenerateIntersection(roads, random.Next(0, width + 1), random.Next(0, height + 1));
+            GenerateIntersection(roads, random.Next(0, width + 1), random.Next(0, height + 1));
+            GenerateIntersection(roads, random.Next(0, width + 1), random.Next(0, height + 1));
+            GenerateIntersection(roads, random.Next(0, width + 1), random.Next(0, height + 1));
 
             //Roads end
 
@@ -146,85 +146,90 @@ namespace W3D3_BOSS_adventure_map
                     }
                     //Title end
 
+
                     //Roads start
 
-                    if (roads[y, x] == true)
+                    if (roads[x, y] == true && x > 0 && y > 0 && x < width && y < height)
                     {
-                        bool roadAbove = roads[y--, x];
-                        bool roadBelow = roads[y++, x];
-                        bool roadToTheRight = roads[y, x++];
-                        bool roadToTheLeft = roads[y, x--];
+                        bool roadAbove = roads[x, y - 1];
+                        bool roadBelow = roads[x, y + 1];
+                        bool roadToTheRight = roads[x + 1, y];
+                        bool roadToTheLeft = roads[x - 1, y];
 
-                        if (roadAbove == true)
+                        /* Matej showing things with ++
+                        int i = 0;
+                        int[] vals;
+                        int sum = 0;
+                        while(i<100)
                         {
-                            if (roadBelow == true)
-                            {
-                                if (roadToTheLeft == true)
-                                {
-                                    if (roadToTheRight == true)
-                                    {
-                                        Console.Write("╬");
-                                        continue;
-                                    }
+                            sum += vals[i++];
+                        }*/
 
-                                    Console.Write("╠");
-                                    continue;
-                                }
-
-                                Console.Write("║");
-                                continue;
-                            }
+                        if (roadAbove && roadBelow && roadToTheRight && roadToTheLeft)
+                        {
+                            Console.Write("╬");
+                            continue;
                         }
 
-                        if (roadAbove == true && roadBelow == true && roadToTheLeft == true)
+                        if (roadAbove && roadBelow && roadToTheRight)
+                        {
+                            Console.Write("╠");
+                            continue;
+                        }
+
+                        if (roadAbove && roadBelow && roadToTheLeft)
                         {
                             Console.Write("╣");
                             continue;
                         }
 
-                        if (roadBelow == true && roadToTheLeft == true && roadToTheRight == true)
+                        if (roadBelow && roadToTheLeft && roadToTheRight)
                         {
                             Console.Write("╦");
                             continue;
                         }
 
-                        if (roadAbove == true && roadToTheLeft == true && roadToTheRight == true)
+                        if (roadAbove && roadToTheLeft && roadToTheRight)
                         {
                             Console.Write("╩");
                             continue;
                         }
 
-                        if (roadAbove == true && roadToTheLeft == true)
+                        if (roadAbove && roadToTheLeft)
                         {
                             Console.Write("╝");
                             continue;
                         }
 
-                        if (roadBelow == true && roadToTheLeft == true)
+                        if (roadBelow && roadToTheLeft)
                         {
                             Console.Write("╗");
                             continue;
                         }
 
-                        if (roadAbove == true && roadToTheRight == true)
+                        if (roadAbove && roadToTheRight)
                         {
                             Console.Write("╚");
                             continue;
                         }
 
-                        if (roadBelow == true && roadToTheRight == true)
+                        if (roadBelow && roadToTheRight)
                         {
                             Console.Write("╔");
                             continue;
                         }
 
-                        if (roadToTheLeft == true && roadToTheRight == true)
+                        if (roadAbove && roadBelow)
+                        {
+                            Console.Write("║");
+                            continue;
+                        }
+
+                        if (roadToTheLeft && roadToTheRight)
                         {
                             Console.Write("═");
                             continue;
                         }
-
-
                     }
                     //Roads end
 
