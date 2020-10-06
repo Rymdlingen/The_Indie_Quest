@@ -190,7 +190,7 @@ namespace Sort_an_array
             // Merge both lists together into a temporary list.
             int leftSublistIndex = startIndex;
             int rightSublistIndex = middleIndex + 1;
-            int[] mergedList = new int[endIndex * 2];
+            int[] mergedList = new int[endIndex - startIndex + 1];
             int index = 0;
 
             while (leftSublistIndex <= middleIndex || rightSublistIndex <= endIndex)
@@ -229,11 +229,7 @@ namespace Sort_an_array
         {
             //InsertionSort();
             //BubbleSort();
-
-            // Can't get the merge sort to work :(
-            //MergeSort();
+            MergeSort();
         }
-
-
     }
 }
