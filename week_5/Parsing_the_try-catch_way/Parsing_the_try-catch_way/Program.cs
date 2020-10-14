@@ -27,6 +27,14 @@ namespace Standard_dice_notation
         {
             int numberOfRolls, diceSides;
 
+            // Error message if the dice notation contains more than one d
+            int oneD = diceNotation.IndexOf('d');
+            bool hasMoreThanOneD = oneD != -1 && diceNotation.IndexOf('d', oneD + 1) != -1;
+            if (hasMoreThanOneD)
+            {
+                throw new ArgumentException($"Roll description is not in standard dice notation.");
+            }
+
             // Error message if d is not in the dice notation
             if (!diceNotation.Contains('d'))
             {
@@ -69,8 +77,8 @@ namespace Standard_dice_notation
             }
 
             // Changing the array to have all three parts of the dice notation
-            values = diceNotation.Split('d', '+', '-');
-            string diceSidesString = values[1];
+            values = values[1].Split('+', '-');
+            string diceSidesString = values[0];
 
             // Error message if dice sides is not an int
             try
@@ -85,9 +93,19 @@ namespace Standard_dice_notation
             // Ckecking if the notation has an modifier and making into a string and then an int
             string fixedBonusString;
             int fixedBonus = 0;
-            if (values.Length > 2)
+            if (values.Length > 1)
             {
-                fixedBonusString = values[2];
+                fixedBonusString = values[1];
+
+                // Error message if bonus is not an int
+                try
+                {
+                    diceSides = Int32.Parse(fixedBonusString);
+                }
+                catch
+                {
+                    throw new ArgumentException($"Bonus ({fixedBonusString}) is not an integer.");
+                }
                 fixedBonus = Int32.Parse(fixedBonusString);
 
                 // If the notation contains a subtraction modifier
@@ -110,6 +128,7 @@ namespace Standard_dice_notation
                 var listOfRolls = new List<int> { };
                 int numberOfThrows = 10;
 
+                // Try if the input is a standard dice notation and if it is continue as expected
                 try
                 {
                     // Making a list of all the throws
@@ -120,7 +139,7 @@ namespace Standard_dice_notation
                     // Displaying the throws
                     Console.CursorTop = cursorPosition;
                     Console.WriteLine($"Throwing {diceNotation} ... {string.Join(" ", listOfRolls)}");
-                }
+                } // If the input is not in standard dice notation throw an exception
                 catch (Exception error)
                 {
                     Console.CursorTop = cursorPosition;
