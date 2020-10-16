@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monsters_with_alignmnet", "Monsters_with_alignmnet\Monsters_with_alignmnet.csproj", "{F9570D72-6F18-49BC-8391-F305344F035E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9570D72-6F18-49BC-8391-F305344F035E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9570D72-6F18-49BC-8391-F305344F035E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9570D72-6F18-49BC-8391-F305344F035E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9570D72-6F18-49BC-8391-F305344F035E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
