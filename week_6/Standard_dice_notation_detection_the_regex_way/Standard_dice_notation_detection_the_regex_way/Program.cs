@@ -72,7 +72,7 @@ namespace Standard_dice_notation
         {
             bool diceNotation = true;
 
-            string diceNotationPattern = "^\\d*d\\d+[\\+\\-]?\\d*$";
+            string diceNotationPattern = "^\\d*d\\d+[+-]?\\d*$";
             if (Regex.IsMatch(text, diceNotationPattern))
             {
 
