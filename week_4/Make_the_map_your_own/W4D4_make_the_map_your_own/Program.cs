@@ -185,11 +185,11 @@ namespace W3D3_BOSS_adventure_map
             //Drawing phase
 
             //Random squirrel
-            bool squirrel = random.Next(10) == 0;
+            bool squirrel = random.Next(2) == 0;
             int squirrelYPosition = random.Next(1, height - 4);
 
             //Random tower
-            bool tower = random.Next(10) == 0;
+            bool tower = random.Next(2) == 0;
             int towerYPosition = 0;
             //Above or below horizental road
             if (random.Next(2) == 0)
@@ -720,7 +720,7 @@ namespace W3D3_BOSS_adventure_map
 
         static void Main(string[] args)
         {
-            DrawMap(80, 25);
+            DrawMap(90, 35);
         }
     }
 }
