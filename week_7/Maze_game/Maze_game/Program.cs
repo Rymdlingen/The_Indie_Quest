@@ -25,6 +25,12 @@ namespace Maze_game
             Console.ReadKey();
         }
 
+        // Method for end screen if you win (catch the minotaur)
+        static void Winner()
+        {
+            Console.WriteLine("You have reached the Minotaur. You win!");
+        }
+
         // Method for drawing the map
         static void DrawMap()
         {
@@ -69,7 +75,7 @@ namespace Maze_game
             Console.ResetColor();
 
             // BEEP!
-            Console.Beep();
+            //Console.Beep();
         }
 
 
@@ -135,31 +141,37 @@ namespace Maze_game
             bool stopGame = false;
             while (!stopGame)
             {
-                var keyInput = Console.ReadKey().Key;
+                var keyInput = Console.ReadKey(true).Key;
 
                 // Up
-                if (keyInput == ConsoleKey.UpArrow && playerY > 0 && map[playerX, playerY - 1] == ' ')
+                if (keyInput == ConsoleKey.UpArrow && playerY > 0 && map[playerX, playerY - 1] == ' ' || map[playerX, playerY - 1] == 'M')
                 {
                     playerY -= 1;
                     DrawMap();
                 } // Down
-                else if (keyInput == ConsoleKey.DownArrow && playerY < height - 1 && map[playerX, playerY + 1] == ' ')
+                else if (keyInput == ConsoleKey.DownArrow && playerY < height - 1 && map[playerX, playerY + 1] == ' ' || map[playerX, playerY + 1] == 'M')
                 {
                     playerY += 1;
                     DrawMap();
                 } // Left
-                else if (keyInput == ConsoleKey.LeftArrow && playerX > 0 && map[playerX - 1, playerY] == ' ')
+                else if (keyInput == ConsoleKey.LeftArrow && playerX > 0 && map[playerX - 1, playerY] == ' ' || map[playerX - 1, playerY] == 'M')
                 {
                     playerX -= 1;
                     DrawMap();
                 } // Right
-                else if (keyInput == ConsoleKey.RightArrow && playerX < width - 1 && map[playerX + 1, playerY] == ' ')
+                else if (keyInput == ConsoleKey.RightArrow && playerX < width - 1 && map[playerX + 1, playerY] == ' ' || map[playerX + 1, playerY] == 'M')
                 {
                     playerX += 1;
                     DrawMap();
                 } // Escape, end game
                 else if (keyInput == ConsoleKey.Escape)
                 {
+                    stopGame = true;
+                }
+
+                if (map[playerX, playerY] == 'M')
+                {
+                    Winner();
                     stopGame = true;
                 }
             }
