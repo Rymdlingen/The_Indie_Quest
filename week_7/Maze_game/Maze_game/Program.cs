@@ -65,7 +65,7 @@ namespace Maze_game
             Console.Write("☺");
 
             // Setting the cursor at the bottom and the color back to gray
-            Console.SetCursorPosition(1, height);
+            Console.SetCursorPosition(0, height);
             Console.ResetColor();
 
             // BEEP!
