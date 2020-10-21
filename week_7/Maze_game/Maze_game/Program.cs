@@ -138,22 +138,22 @@ namespace Maze_game
                 var keyInput = Console.ReadKey().Key;
 
                 // Up
-                if (keyInput == ConsoleKey.UpArrow && playerY > 0)
+                if (keyInput == ConsoleKey.UpArrow && playerY > 0 && map[playerX, playerY - 1] == ' ')
                 {
                     playerY -= 1;
                     DrawMap();
                 } // Down
-                else if (keyInput == ConsoleKey.DownArrow && playerY < height - 1)
+                else if (keyInput == ConsoleKey.DownArrow && playerY < height - 1 && map[playerX, playerY + 1] == ' ')
                 {
                     playerY += 1;
                     DrawMap();
                 } // Left
-                else if (keyInput == ConsoleKey.LeftArrow && playerX > 0)
+                else if (keyInput == ConsoleKey.LeftArrow && playerX > 0 && map[playerX - 1, playerY] == ' ')
                 {
                     playerX -= 1;
                     DrawMap();
                 } // Right
-                else if (keyInput == ConsoleKey.RightArrow && playerX < width - 1)
+                else if (keyInput == ConsoleKey.RightArrow && playerX < width - 1 && map[playerX + 1, playerY] == ' ')
                 {
                     playerX += 1;
                     DrawMap();
