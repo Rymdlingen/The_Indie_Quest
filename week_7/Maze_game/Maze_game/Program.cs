@@ -12,8 +12,8 @@ namespace Maze_game
         static string levelName;
 
         // Variables for saving S(start) position
-        static int startX;
-        static int startY;
+        static int playerX;
+        static int playerY;
 
         static Random random = new Random();
 
@@ -39,15 +39,10 @@ namespace Maze_game
                     // Color for walls
                     Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                    // Randomly generating forest in the first three rows
+                    // Changing color for the forest
                     if (y < 3)
                     {
-                        if (random.Next(3 + y * 2) == 0)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("♠");
-                            continue;
-                        }
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                     }
 
                     // Changing the color for the minotaur
@@ -62,14 +57,15 @@ namespace Maze_game
                 // New line
                 Console.WriteLine();
             }
+            Console.WriteLine();
 
             // Drawing the player at the start position
-            Console.SetCursorPosition(startX, startY);
+            Console.SetCursorPosition(playerX, playerY);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("☺");
 
             // Setting the cursor at the bottom and the color back to gray
-            Console.SetCursorPosition(0, height);
+            Console.SetCursorPosition(1, height);
             Console.ResetColor();
 
             // BEEP!
@@ -95,7 +91,7 @@ namespace Maze_game
             width = Int32.Parse(xAndY[1].Value);
             height = Int32.Parse(xAndY[2].Value);
 
-            // Storing level information int an 2-dimensional array
+            // Storing level information in an 2-dimensional array
             map = new char[width, height];
             for (int y = 0; y < height; y++)
             {
@@ -108,11 +104,21 @@ namespace Maze_game
                     if (currentRow[x] == 'S')
                     {
                         map[x, y] = ' ';
-                        startX = x;
-                        startY = y;
+                        playerX = x;
+                        playerY = y;
                     }
                     else
                     {
+                        // Randomly generating forest in the first three rows
+                        if (y < 2 && y < 5)
+                        {
+                            if (random.Next(3 + y * 2) == 0)
+                            {
+                                map[x, y] = '♠';
+                                continue;
+                            }
+                        }
+
                         // Extarcting data from ever x on this y and storing it in the array
                         map[x, y] = currentRow[x];
                     }
@@ -124,6 +130,39 @@ namespace Maze_game
 
             // Drawing map
             DrawMap();
+
+            // Asking for keyinput and draw new map if arrowkeys are pressed
+            bool stopGame = false;
+            while (!stopGame)
+            {
+                var keyInput = Console.ReadKey().Key;
+
+                // Up
+                if (keyInput == ConsoleKey.UpArrow && playerY > 0)
+                {
+                    playerY -= 1;
+                    DrawMap();
+                } // Down
+                else if (keyInput == ConsoleKey.DownArrow && playerY < height - 1)
+                {
+                    playerY += 1;
+                    DrawMap();
+                } // Left
+                else if (keyInput == ConsoleKey.LeftArrow && playerX > 0)
+                {
+                    playerX -= 1;
+                    DrawMap();
+                } // Right
+                else if (keyInput == ConsoleKey.RightArrow && playerX < width - 1)
+                {
+                    playerX += 1;
+                    DrawMap();
+                } // Escape, end game
+                else if (keyInput == ConsoleKey.Escape)
+                {
+                    stopGame = true;
+                }
+            }
         }
     }
 }
