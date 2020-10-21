@@ -60,7 +60,9 @@ namespace Minotaurs_lair
             // Setting the cursor at the bottom and the color back to gray
             Console.CursorTop = height;
             Console.CursorLeft = 0;
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
+
+            Console.Beep();
         }
 
         static void Main(string[] args)
