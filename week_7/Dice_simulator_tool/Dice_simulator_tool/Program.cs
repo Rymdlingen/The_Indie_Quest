@@ -15,6 +15,9 @@ namespace Dice_simulator_tool
             int diceSide;
             int sum = 0;
 
+            rollsAndSum.RemoveRange(0, rollsAndSum.Count);
+
+
             // Rolling the dice
             for (var i = 0; i < numberOfRolls; i++)
             {
@@ -129,31 +132,59 @@ namespace Dice_simulator_tool
 
         }
 
-
         static void Main(string[] args)
         {
+            bool sameRoll = true;
+            bool newRoll = true;
+            string inputDiceNotation = " ";
+
             Console.WriteLine("DICE SIMULATOR\n");
-            Console.WriteLine("Enter desired dice roll in standard dice notation:");
-            string inputDiceNotation = Console.ReadLine();
 
-            while (!IsStandardDiceNotation(inputDiceNotation))
+            while (sameRoll)
             {
-                Console.WriteLine("\nYou did not use standard dice notation. Try again:");
-                inputDiceNotation = Console.ReadLine();
+                while (newRoll)
+                {
+                    Console.WriteLine("Enter desired dice roll in standard dice notation:");
+                    inputDiceNotation = Console.ReadLine();
+
+                    while (!IsStandardDiceNotation(inputDiceNotation))
+                    {
+                        Console.WriteLine("\nYou did not use standard dice notation. Try again:");
+                        inputDiceNotation = Console.ReadLine();
+                    }
+
+                    newRoll = false;
+                }
+
+                DiceRoll(inputDiceNotation);
+
+                Console.WriteLine("\nSimulating...\n");
+                for (int rolls = 0; rolls < rollsAndSum.Count - 1; rolls++)
+                {
+                    string ordinalNumber = OrdinalNumber(rolls + 1);
+                    Console.WriteLine($"{ordinalNumber} roll is: {rollsAndSum[rolls]}");
+                }
+
+                Console.WriteLine($"\nYou rolled {rollsAndSum[rollsAndSum.Count - 1]}.");
+
+
+                Console.WriteLine("\nDo ypu want to (r)epeat, enter a (n)ew roll or (q)uit?");
+                string action = Console.ReadLine();
+                Console.WriteLine();
+
+                if (action == "r" || action == "repeat")
+                {
+
+                }
+                else if (action == "n" || action == "new roll" || action == "new" || action == "roll")
+                {
+                    newRoll = true;
+                }
+                else
+                {
+                    sameRoll = false;
+                }
             }
-
-            DiceRoll(inputDiceNotation);
-
-            Console.WriteLine("\nSimulating...\n");
-
-            for (int rolls = 0; rolls < rollsAndSum.Count - 1; rolls++)
-            {
-                string ordinalNumber = OrdinalNumber(rolls + 1);
-                Console.WriteLine($"{ordinalNumber} roll is: {rollsAndSum[rolls]}");
-            }
-
-            Console.WriteLine($"\nYou rolled {rollsAndSum[rollsAndSum.Count - 1]}.");
-
         }
     }
 }
