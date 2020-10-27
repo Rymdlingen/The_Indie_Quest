@@ -68,7 +68,7 @@ namespace Maze_game
             // Drawing the player at the start position
             Console.SetCursorPosition(playerX, playerY);
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("☺");
+            Console.Write("P");
 
             // Setting the cursor at the bottom and the color back to gray
             Console.SetCursorPosition(0, height);

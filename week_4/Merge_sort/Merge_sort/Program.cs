@@ -43,7 +43,7 @@ namespace Merge_sort
             var data = new List<int>();
             var random = new Random();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 70; i++)
             {
                 data.Add(random.Next(20));
                 DisplayData(data);
