@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dice_simulator_tool
 {
@@ -138,15 +139,19 @@ namespace Dice_simulator_tool
             bool newRoll = true;
             string inputDiceNotation = " ";
 
+            // Title of tool
             Console.WriteLine("DICE SIMULATOR\n");
 
             while (sameRoll)
             {
+                // Asking for a new input of standard dice notation
                 while (newRoll)
                 {
+                    // Asking for input
                     Console.WriteLine("Enter desired dice roll in standard dice notation:");
                     inputDiceNotation = Console.ReadLine();
 
+                    // Checking if the input is in standard dice notation
                     while (!IsStandardDiceNotation(inputDiceNotation))
                     {
                         Console.WriteLine("\nYou did not use standard dice notation. Try again:");
@@ -159,30 +164,142 @@ namespace Dice_simulator_tool
                 DiceRoll(inputDiceNotation);
 
                 Console.WriteLine("\nSimulating...\n");
+
+                // Reading text files with ASCII-art of dices
+                string pathD4 = "d4.txt";
+                string pathD6 = "d6.txt";
+                string[][] dices = new string[7][];
+
+                dices[4] = File.ReadAllLines(pathD4);
+                dices[6] = File.ReadAllLines(pathD6);
+
+                // Displaying all the rolls and the sum
                 for (int rolls = 0; rolls < rollsAndSum.Count - 1; rolls++)
                 {
-                    string ordinalNumber = OrdinalNumber(rolls + 1);
-                    Console.WriteLine($"{ordinalNumber} roll is: {rollsAndSum[rolls]}");
+                    // Checking for dice with 6 sides
+                    if (Regex.IsMatch(inputDiceNotation, @"\d*d6.*"))
+                    {
+                        string ordinalNumber = OrdinalNumber(rolls + 1);
+                        Console.WriteLine($"{ordinalNumber} roll:");
+
+                        // Draw the dice
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        foreach (string dice in dices[6])
+                        {
+                            if (Regex.IsMatch(dice, @"\d"))
+                            {
+                                if (rollsAndSum[rolls] == 1)
+                                {
+                                    string newDiceLine = dice.Replace('1', 'O');
+                                    newDiceLine = newDiceLine.Replace('2', ' ');
+                                    newDiceLine = newDiceLine.Replace('3', ' ');
+                                    newDiceLine = newDiceLine.Replace('4', ' ');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                                else if (rollsAndSum[rolls] == 2)
+                                {
+                                    string newDiceLine = dice.Replace('1', ' ');
+                                    newDiceLine = newDiceLine.Replace('2', 'O');
+                                    newDiceLine = newDiceLine.Replace('3', ' ');
+                                    newDiceLine = newDiceLine.Replace('4', ' ');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                                else if (rollsAndSum[rolls] == 3)
+                                {
+                                    string newDiceLine = dice.Replace('1', 'O');
+                                    newDiceLine = newDiceLine.Replace('2', ' ');
+                                    newDiceLine = newDiceLine.Replace('3', 'O');
+                                    newDiceLine = newDiceLine.Replace('4', ' ');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                                else if (rollsAndSum[rolls] == 4)
+                                {
+                                    string newDiceLine = dice.Replace('1', ' ');
+                                    newDiceLine = newDiceLine.Replace('2', ' ');
+                                    newDiceLine = newDiceLine.Replace('3', 'O');
+                                    newDiceLine = newDiceLine.Replace('4', 'O');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                                else if (rollsAndSum[rolls] == 5)
+                                {
+                                    string newDiceLine = dice.Replace('1', 'O');
+                                    newDiceLine = newDiceLine.Replace('2', ' ');
+                                    newDiceLine = newDiceLine.Replace('3', 'O');
+                                    newDiceLine = newDiceLine.Replace('4', 'O');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                                else if (rollsAndSum[rolls] == 6)
+                                {
+                                    string newDiceLine = dice.Replace('1', ' ');
+                                    newDiceLine = newDiceLine.Replace('2', 'O');
+                                    newDiceLine = newDiceLine.Replace('3', 'O');
+                                    newDiceLine = newDiceLine.Replace('4', 'O');
+                                    Console.WriteLine(newDiceLine);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(dice);
+                            }
+                        }
+                        Console.WriteLine();
+                        Console.ResetColor();
+
+                    } // Checking for dice with 4 sides
+                    else if (Regex.IsMatch(inputDiceNotation, @"\d*d4.*"))
+                    {
+                        string ordinalNumber = OrdinalNumber(rolls + 1);
+                        Console.WriteLine($"{ordinalNumber} roll:");
+
+                        // Draw the dice
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        foreach (string dice in dices[4])
+                        {
+                            if (dice.Contains('n'))
+                            {
+                                char number = Convert.ToChar(rollsAndSum[rolls].ToString());
+                                Console.WriteLine(dice.Replace('n', number));
+                            }
+                            else
+                            {
+                                Console.WriteLine(dice);
+                            }
+                        }
+                        Console.WriteLine();
+                        Console.ResetColor();
+                    }
+                    else // all other dices
+                    {
+                        string ordinalNumber = OrdinalNumber(rolls + 1);
+                        Console.WriteLine($"{ordinalNumber} roll is: {rollsAndSum[rolls]}");
+                    }
                 }
 
+                // Displaying total score
                 Console.WriteLine($"\nYou rolled {rollsAndSum[rollsAndSum.Count - 1]}.");
 
-
-                Console.WriteLine("\nDo ypu want to (r)epeat, enter a (n)ew roll or (q)uit?");
-                string action = Console.ReadLine();
-                Console.WriteLine();
-
-                if (action == "r" || action == "repeat")
+                // Asking if reapet, enter nes notation or quit
+                bool answer = false;
+                while (!answer)
                 {
+                    Console.WriteLine("\nDo ypu want to (r)epeat, enter a (n)ew roll or (q)uit?");
+                    string action = Console.ReadLine();
+                    Console.WriteLine();
 
-                }
-                else if (action == "n" || action == "new roll" || action == "new" || action == "roll")
-                {
-                    newRoll = true;
-                }
-                else
-                {
-                    sameRoll = false;
+                    if (action == "r" || action == "repeat")
+                    {
+                        answer = true;
+                    }
+                    else if (action == "n" || action == "new roll" || action == "new" || action == "roll")
+                    {
+                        newRoll = true;
+                        answer = true;
+                    }
+                    else if (action == "q" || action == "quit")
+                    {
+                        sameRoll = false;
+                        answer = true;
+                    }
                 }
             }
         }
