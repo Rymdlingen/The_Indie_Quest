@@ -5,6 +5,14 @@ using System.Text.RegularExpressions;
 
 namespace Monster_Manual_with_search
 {
+    class MonsterEntry
+    {
+        public string Name;
+        public string Description;
+        public string Alignment;
+        public string HitPoints;
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -23,18 +31,47 @@ namespace Monster_Manual_with_search
 
             // A list of all monster names
             var monsterNames = new List<string> { };
+            var monsterEntries = new List<MonsterEntry> { };
             for (int manualLines = 0; manualLines < monsterManual.Length; manualLines++)
             {
+                var monsterEntry = new MonsterEntry();
+
                 // Each monsters information contians 6 lines
                 for (int block = 0; block < 6; block++)
                 {
                     // The first line of a block has the name of the monster
                     if (block == 0)
                     {
-                        // Add name to list of names
-                        monsterNames.Add(monsterManual[manualLines]);
+                        // Add name to the list
+                        monsterEntry.Name = monsterManual[manualLines + block];
+                        monsterNames.Add(monsterManual[manualLines + block]);
+                    }
+                    else if (block == 1)
+                    {
+                        // Add description and alignment to list
+                        string[] descriptionAndAlignment = monsterManual[manualLines + block].Split(',');
+                        monsterEntry.Description = descriptionAndAlignment[0];
+                        monsterEntry.Alignment = descriptionAndAlignment[1].TrimStart();
+                    }
+                    else if (block == 2)
+                    {
+                        // Search for and add hit points (dice notation) to list
+                        string pattern = @"\d*d\d*[-+]?\d*";
+                        Match diceNotation = Regex.Match(monsterManual[manualLines + block], pattern);
+                        if (diceNotation.Value == "")
+                        {
+                            Match number = Regex.Match(monsterManual[manualLines + block], @"\d+");
+                            monsterEntry.HitPoints = $"{number.Value} (no standard dice notation found)";
+                        }
+                        else
+                        {
+                            monsterEntry.HitPoints = diceNotation.Value;
+                        }
                     }
                 }
+                // Adding the monster to the list of monsters
+                monsterEntries.Add(monsterEntry);
+
                 // Skipping to the next block (one extra + is added in the forloop, thats for the blank line between blocks)
                 manualLines += 6;
             }
@@ -81,11 +118,11 @@ namespace Monster_Manual_with_search
             //searchResult.Sort();
 
             // Displaying the list with numbers
+            int monsterNumber = 1;
             // If there was only one match
             if (searchResult.Count == 1)
             {
-                Console.WriteLine($"Displaying information for {searchResult[0]}");
-                Console.WriteLine();
+
             }// Asking the user to choose if there was multiple matches
             else
             {
@@ -102,7 +139,6 @@ namespace Monster_Manual_with_search
 
                 // Checking if input is an integer
                 bool isANumber = false;
-                int monsterNumber = 1;
                 while (!isANumber)
                 {
                     // if the input is an integer, parse the number
@@ -111,7 +147,7 @@ namespace Monster_Manual_with_search
                         monsterNumber = Int32.Parse(monsterNumberString);
 
                         // if the number is on the list, continue
-                        if (monsterNumber < searchResult.Count)
+                        if (monsterNumber <= searchResult.Count && monsterNumber > 0)
                         {
                             isANumber = true;
                             continue;
@@ -123,11 +159,23 @@ namespace Monster_Manual_with_search
                     monsterNumberString = Console.ReadLine();
                     Console.WriteLine();
                 }
-
-                // Confirming choice
-                Console.WriteLine($"Displaying information for {searchResult[monsterNumber - 1]}");
-                Console.WriteLine();
             }
+
+            // Variable with the name of the selected monster
+            string selectedMonster = searchResult[monsterNumber - 1];
+
+            // Confirming choice
+            Console.WriteLine($"Displaying information for {selectedMonster}.\n");
+
+            // Finding the index of the monster
+            int selectedMonsteIndex = monsterNames.IndexOf(selectedMonster);
+
+            // Displaying information about the selected monster
+            Console.WriteLine($"Name: {monsterEntries[selectedMonsteIndex].Name}");
+            Console.WriteLine($"Description: {monsterEntries[selectedMonsteIndex].Description}");
+            Console.WriteLine($"Alignment: {monsterEntries[selectedMonsteIndex].Alignment}");
+            Console.WriteLine($"Hit points: {monsterEntries[selectedMonsteIndex].HitPoints}");
+            Console.WriteLine();
         }
     }
 }
