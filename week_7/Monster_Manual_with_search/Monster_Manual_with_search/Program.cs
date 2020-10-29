@@ -11,6 +11,13 @@ namespace Monster_Manual_with_search
         public string Description;
         public string Alignment;
         public string HitPoints;
+        public ArmorInformation Armor = new ArmorInformation();
+    }
+
+    class ArmorInformation
+    {
+        public int Class;
+        public string Type;
     }
 
     class Program
@@ -67,6 +74,14 @@ namespace Monster_Manual_with_search
                         {
                             monsterEntry.HitPoints = diceNotation.Value;
                         }
+                    }
+                    else if (block == 3)
+                    {
+                        string pattern = @"(\d+) (\((.*)\))?";
+                        Match match = Regex.Match(monsterManual[manualLines + block], pattern);
+                        GroupCollection group = match.Groups;
+                        monsterEntry.Armor.Class = Int32.Parse(group[1].Value);
+                        monsterEntry.Armor.Type = group[3].Value;
                     }
                 }
                 // Adding the monster to the list of monsters
@@ -168,13 +183,18 @@ namespace Monster_Manual_with_search
             Console.WriteLine($"Displaying information for {selectedMonster}.\n");
 
             // Finding the index of the monster
-            int selectedMonsteIndex = monsterNames.IndexOf(selectedMonster);
+            int selectedMonsterIndex = monsterNames.IndexOf(selectedMonster);
 
             // Displaying information about the selected monster
-            Console.WriteLine($"Name: {monsterEntries[selectedMonsteIndex].Name}");
-            Console.WriteLine($"Description: {monsterEntries[selectedMonsteIndex].Description}");
-            Console.WriteLine($"Alignment: {monsterEntries[selectedMonsteIndex].Alignment}");
-            Console.WriteLine($"Hit points: {monsterEntries[selectedMonsteIndex].HitPoints}");
+            Console.WriteLine($"Name: {monsterEntries[selectedMonsterIndex].Name}");
+            Console.WriteLine($"Description: {monsterEntries[selectedMonsterIndex].Description}");
+            Console.WriteLine($"Alignment: {monsterEntries[selectedMonsterIndex].Alignment}");
+            Console.WriteLine($"Hit points: {monsterEntries[selectedMonsterIndex].HitPoints}");
+            Console.WriteLine($"Armor class: {monsterEntries[selectedMonsterIndex].Armor.Class}");
+            if (monsterEntries[selectedMonsterIndex].Armor.Type != "")
+            {
+                Console.WriteLine($"Armor type: {monsterEntries[selectedMonsterIndex].Armor.Type}");
+            }
             Console.WriteLine();
         }
     }
