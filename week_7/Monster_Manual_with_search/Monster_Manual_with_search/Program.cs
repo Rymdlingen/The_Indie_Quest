@@ -20,6 +20,13 @@ namespace Monster_Manual_with_search
         public string Type;
     }
 
+    class ArmorTypeEntry
+    {
+        public string Name;
+        public ArmorTypeCategory Category;
+        public int Weight;
+    }
+
     enum ArmorType
     {
         Unspecified,
@@ -34,6 +41,13 @@ namespace Monster_Manual_with_search
         Other
     }
 
+    enum ArmorTypeCategory
+    {
+        Light,
+        Medium,
+        Heavy
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -44,11 +58,46 @@ namespace Monster_Manual_with_search
             // A string with what the user inputs in the search
             string monsterSearch = "";
 
+            // Path to armor types
+            string pathArmorTypes = "ArmorTypes.txt";
+
+            // Putting all the armor types in an array
+            string[] armorTypesFile = File.ReadAllLines(pathArmorTypes);
+
+            // A dictionary of armor types
+            var armorTypeEntries = new Dictionary<ArmorType, ArmorTypeEntry> { };
+
+            foreach (string line in armorTypesFile)
+            {
+                var values = new List<string> { };
+                for (int value = 0; value < line.Split(',').Length; value++)
+                {
+                    values.Add(line.Split(',')[value]);
+                }
+
+                var armorTypeEntry = new ArmorTypeEntry();
+
+                ArmorType armorType = (ArmorType)Enum.Parse(typeof(ArmorType), values[0]);
+
+                // Storing the name of the armor
+                armorTypeEntry.Name = values[1];
+
+                // Storing the category of the armor
+                //string armorTypeString = values[2];
+                ArmorTypeCategory armorTypeCategory = (ArmorTypeCategory)Enum.Parse(typeof(ArmorTypeCategory), values[2]);
+                armorTypeEntry.Category = armorTypeCategory;
+
+                // Storing the weight of the armor
+                armorTypeEntry.Weight = Int32.Parse(values[3]);
+
+                armorTypeEntries.Add(armorType, armorTypeEntry);
+            }
+
             // Path to the manual
-            string path = "MonsterManual.txt";
+            string pathMonsterManual = "MonsterManual.txt";
 
             // Putting all the lines in the manual in an array
-            string[] monsterManual = File.ReadAllLines(path);
+            string[] monsterManual = File.ReadAllLines(pathMonsterManual);
 
             // A list of all monster names and a list with information about every monster
             var monsterNames = new List<string> { };
@@ -56,20 +105,20 @@ namespace Monster_Manual_with_search
 
             // Sorting all monsters by armor type
             string[] armorTypesNames = Enum.GetNames(typeof(ArmorType));
+            //string[] armorTypesNames = Enum.GetNames(typeof(ArmorType));
             var monstersSortedByArmorType = new List<List<string>> { };
 
-            // Formatting the armor types
-            for (int armorType = 0; armorType < armorTypesNames.Length; armorType++)
-            {
-                string armorTypeWithTwoWordsPattern = "([A-Z].*)([A-Z].*)";
-                if (Regex.IsMatch(armorTypesNames[armorType], armorTypeWithTwoWordsPattern))
-                {
-                    Match armorTypeMatch = Regex.Match(armorTypesNames[armorType], armorTypeWithTwoWordsPattern);
-                    GroupCollection armorTypeGroups = armorTypeMatch.Groups;
-                    armorTypesNames[armorType] = $"{armorTypeGroups[1]} {armorTypeGroups[2]}";
-                }
-
-            }
+            /* // Formatting the armor types
+             for (int armorType = 0; armorType < armorTypesNamesFormatted.Length; armorType++)
+             {
+                 string armorTypeWithTwoWordsPattern = "([A-Z].*)([A-Z].*)";
+                 if (Regex.IsMatch(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern))
+                 {
+                     Match armorTypeMatch = Regex.Match(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern);
+                     GroupCollection armorTypeGroups = armorTypeMatch.Groups;
+                     armorTypesNamesFormatted[armorType] = $"{armorTypeGroups[1]} {armorTypeGroups[2]}";
+                 }
+             }*/
 
             // Creating as many new nested lists as there is armor types to sort all monsters into.
             for (int armorTypes = 0; armorTypes < armorTypesNames.Length; armorTypes++)
@@ -99,7 +148,7 @@ namespace Monster_Manual_with_search
                         // Some of the lines with thedescription and alignment contains more than on ',' this if else makes sure those lines are stored correctly
                         if (descriptionAndAlignment.Length > 2)
                         {
-                            monsterEntry.Description = descriptionAndAlignment[0] + descriptionAndAlignment[1];
+                            monsterEntry.Description = $"{descriptionAndAlignment[0]}, {descriptionAndAlignment[1].TrimStart()}";
                             monsterEntry.Alignment = descriptionAndAlignment[2].TrimStart();
                         }
                         else
@@ -137,71 +186,72 @@ namespace Monster_Manual_with_search
                         // Sort all monsters by their armor type
                         for (int armorType = 0; armorType < armorTypesNames.Length; armorType++)
                         {
+                            /* if (group[3].Value == "")
+                             {
+                                 monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
+                                 // How far out?
+                                 break;
+                             }
+                             else if (armorType < armorTypesNamesFormatted.Length - 1 && group[3].Value.ToLower().Contains(armorTypesNamesFormatted[armorType].ToLower()))
+                             {
+                                 if (group[3].Value.ToLower().Contains("studded"))
+                                 {
+                                     monstersSortedByArmorType[armorType + 1].Add(monsterManual[manualLines]);
+                                 }
+                                 else
+                                 {
+                                     monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
+                                 }
+                                 break;
+                             }
+                             else if (armorType == 9)
+                             {
+                                 monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
+                                 break;
+                             }*/
+
+
                             if (group[3].Value == "")
                             {
-                                monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                // How far out?
-                                break;
+                                monstersSortedByArmorType[0].Add(monsterManual[manualLines]);
                             }
-                            else if (armorType < armorTypesNames.Length - 1 && group[3].Value.ToLower().Contains(armorTypesNames[armorType].ToLower()))
+                            else if (group[3].Value.ToLower().Contains("natural"))
                             {
-                                if (group[3].Value.ToLower().Contains("studded"))
-                                {
-                                    monstersSortedByArmorType[armorType + 1].Add(monsterManual[manualLines]);
-                                }
-                                else
-                                {
-                                    monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                }
-                                break;
+                                monstersSortedByArmorType[1].Add(monsterManual[manualLines]);
                             }
-                            else if (armorType == 9)
+                            else if (group[3].Value.ToLower().Contains("leather "))
                             {
-                                monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                break;
+                                monstersSortedByArmorType[2].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("studded"))
+                            {
+                                monstersSortedByArmorType[3].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("hide"))
+                            {
+                                monstersSortedByArmorType[4].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("chain shirt"))
+                            {
+                                monstersSortedByArmorType[5].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("chain mail"))
+                            {
+                                monstersSortedByArmorType[6].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("scale mail"))
+                            {
+                                monstersSortedByArmorType[7].Add(monsterManual[manualLines]);
+                            }
+                            else if (group[3].Value.ToLower().Contains("plate"))
+                            {
+                                monstersSortedByArmorType[8].Add(monsterManual[manualLines]);
+                            }
+                            else
+                            {
+                                monstersSortedByArmorType[9].Add(monsterManual[manualLines]);
                             }
                         }
-
-                        /*if (group[3].Value == "")
-                        {
-                            monstersSortedByArmorType[0].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("natural"))
-                        {
-                            monstersSortedByArmorType[1].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("leather "))
-                        {
-                            monstersSortedByArmorType[2].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("studded"))
-                        {
-                            monstersSortedByArmorType[3].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("hide"))
-                        {
-                            monstersSortedByArmorType[4].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("chain shirt"))
-                        {
-                            monstersSortedByArmorType[5].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("chain mail"))
-                        {
-                            monstersSortedByArmorType[6].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("scale mail"))
-                        {
-                            monstersSortedByArmorType[7].Add(monsterManual[manualLines]);
-                        }
-                        else if (group[3].Value.ToLower().Contains("plate"))
-                        {
-                            monstersSortedByArmorType[8].Add(monsterManual[manualLines]);
-                        }
-                        else
-                        {
-                            monstersSortedByArmorType[9].Add(monsterManual[manualLines]);
-                        }*/
                     }
                 }
                 // Adding the monster to the list of monsters
@@ -389,9 +439,22 @@ namespace Monster_Manual_with_search
             Console.WriteLine($"Alignment: {monsterEntries[selectedMonsterIndex].Alignment}");
             Console.WriteLine($"Hit points: {monsterEntries[selectedMonsterIndex].HitPoints}");
             Console.WriteLine($"Armor class: {monsterEntries[selectedMonsterIndex].Armor.Class}");
+
+            ArmorType armorTypeForSelectedMonster = ArmorType.Unspecified;
             if (monsterEntries[selectedMonsterIndex].Armor.Type != "")
             {
                 Console.WriteLine($"Armor type: {monsterEntries[selectedMonsterIndex].Armor.Type}");
+
+                if (!monstersSortedByArmorType[9].Contains(monsterEntries[selectedMonsterIndex].Name))
+                {
+                    armorTypeForSelectedMonster = (ArmorType)Enum.Parse(typeof(ArmorType), monsterEntries[selectedMonsterIndex].Armor.Type);
+                }
+            }
+
+            if (armorTypeEntries.ContainsKey(armorTypeForSelectedMonster))
+            {
+                Console.WriteLine($"Armor category: {armorTypeEntries[armorTypeForSelectedMonster].Category}");
+                Console.WriteLine($"Armor weight: {armorTypeEntries[armorTypeForSelectedMonster].Weight} lb.");
             }
             Console.WriteLine();
         }
