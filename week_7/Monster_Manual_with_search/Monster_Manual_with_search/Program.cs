@@ -17,7 +17,8 @@ namespace Monster_Manual_with_search
     class ArmorInformation
     {
         public int Class;
-        public string Type;
+        public string Description;
+        public ArmorType Type;
     }
 
     class ArmorTypeEntry
@@ -100,30 +101,34 @@ namespace Monster_Manual_with_search
             string[] monsterManual = File.ReadAllLines(pathMonsterManual);
 
             // A list of all monster names and a list with information about every monster
-            var monsterNames = new List<string> { };
-            var monsterEntries = new List<MonsterEntry> { };
+            var monsterNames = new List<string>();
+            var monsterEntries = new List<MonsterEntry>();
 
             // Sorting all monsters by armor type
             string[] armorTypesNames = Enum.GetNames(typeof(ArmorType));
-            //string[] armorTypesNames = Enum.GetNames(typeof(ArmorType));
-            var monstersSortedByArmorType = new List<List<string>> { };
+            string[] armorTypesNamesFormatted = Enum.GetNames(typeof(ArmorType));
+            ArmorType[] armorTypes = (ArmorType[])Enum.GetValues(typeof(ArmorType));
 
-            /* // Formatting the armor types
-             for (int armorType = 0; armorType < armorTypesNamesFormatted.Length; armorType++)
-             {
-                 string armorTypeWithTwoWordsPattern = "([A-Z].*)([A-Z].*)";
-                 if (Regex.IsMatch(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern))
-                 {
-                     Match armorTypeMatch = Regex.Match(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern);
-                     GroupCollection armorTypeGroups = armorTypeMatch.Groups;
-                     armorTypesNamesFormatted[armorType] = $"{armorTypeGroups[1]} {armorTypeGroups[2]}";
-                 }
-             }*/
+
+            //string[] armorTypesNames = Enum.GetNames(typeof(ArmorType));
+            var monstersSortedByArmorType = new Dictionary<ArmorType, List<string>>();
+
+            // Formatting the armor types
+            for (int armorType = 0; armorType < armorTypesNamesFormatted.Length; armorType++)
+            {
+                string armorTypeWithTwoWordsPattern = "([A-Z].*)([A-Z].*)";
+                if (Regex.IsMatch(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern))
+                {
+                    Match armorTypeMatch = Regex.Match(armorTypesNamesFormatted[armorType], armorTypeWithTwoWordsPattern);
+                    GroupCollection armorTypeGroups = armorTypeMatch.Groups;
+                    armorTypesNamesFormatted[armorType] = $"{armorTypeGroups[1]} {armorTypeGroups[2]}";
+                }
+            }
 
             // Creating as many new nested lists as there is armor types to sort all monsters into.
-            for (int armorTypes = 0; armorTypes < armorTypesNames.Length; armorTypes++)
+            foreach (ArmorType type in armorTypes)
             {
-                monstersSortedByArmorType.Add(new List<string> { });
+                monstersSortedByArmorType.Add(type, new List<string> { });
             }
 
             // Getting information about each monster and putting it in the right list, array and/or object.
@@ -181,77 +186,37 @@ namespace Monster_Manual_with_search
                         Match match = Regex.Match(monsterManual[manualLines + block], pattern);
                         GroupCollection group = match.Groups;
                         monsterEntry.Armor.Class = Int32.Parse(group[1].Value);
-                        monsterEntry.Armor.Type = group[3].Value;
+                        monsterEntry.Armor.Description = group[3].Value;
 
-                        // Sort all monsters by their armor type
-                        for (int armorType = 0; armorType < armorTypesNames.Length; armorType++)
+                        if (group[3].Value == "")
                         {
-                            /* if (group[3].Value == "")
-                             {
-                                 monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                 // How far out?
-                                 break;
-                             }
-                             else if (armorType < armorTypesNamesFormatted.Length - 1 && group[3].Value.ToLower().Contains(armorTypesNamesFormatted[armorType].ToLower()))
-                             {
-                                 if (group[3].Value.ToLower().Contains("studded"))
-                                 {
-                                     monstersSortedByArmorType[armorType + 1].Add(monsterManual[manualLines]);
-                                 }
-                                 else
-                                 {
-                                     monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                 }
-                                 break;
-                             }
-                             else if (armorType == 9)
-                             {
-                                 monstersSortedByArmorType[armorType].Add(monsterManual[manualLines]);
-                                 break;
-                             }*/
-
-
-                            if (group[3].Value == "")
+                            monsterEntry.Armor.Type = ArmorType.Unspecified;
+                        }
+                        else
+                        {
+                            foreach (ArmorType type in armorTypes)
                             {
-                                monstersSortedByArmorType[0].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("natural"))
-                            {
-                                monstersSortedByArmorType[1].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("leather "))
-                            {
-                                monstersSortedByArmorType[2].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("studded"))
-                            {
-                                monstersSortedByArmorType[3].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("hide"))
-                            {
-                                monstersSortedByArmorType[4].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("chain shirt"))
-                            {
-                                monstersSortedByArmorType[5].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("chain mail"))
-                            {
-                                monstersSortedByArmorType[6].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("scale mail"))
-                            {
-                                monstersSortedByArmorType[7].Add(monsterManual[manualLines]);
-                            }
-                            else if (group[3].Value.ToLower().Contains("plate"))
-                            {
-                                monstersSortedByArmorType[8].Add(monsterManual[manualLines]);
-                            }
-                            else
-                            {
-                                monstersSortedByArmorType[9].Add(monsterManual[manualLines]);
+                                if (group[3].Value.ToLower().Contains(armorTypesNamesFormatted[(int)type].ToLower()))
+                                {
+                                    if (group[3].Value.ToLower().Contains("studded"))
+                                    {
+                                        monsterEntry.Armor.Type = ArmorType.StuddedLeather;
+                                    }
+                                    else
+                                    {
+                                        monsterEntry.Armor.Type = type;
+                                    }
+                                    break;
+                                }
+                                else if (type == ArmorType.Other)
+                                {
+                                    monsterEntry.Armor.Type = ArmorType.Other;
+                                    break;
+                                }
                             }
                         }
+
+                        monstersSortedByArmorType[monsterEntry.Armor.Type].Add(monsterManual[manualLines]);
                     }
                 }
                 // Adding the monster to the list of monsters
@@ -272,7 +237,7 @@ namespace Monster_Manual_with_search
 
             bool searchByName = false;
             bool searchByArmorType = false;
-            int selectedArmorTypeNumber = 1;
+            ArmorType selectedArmorType = ArmorType.Unspecified;
 
             // Continuing with different searches for different choises
             if (typeOfSearch.ToLower() == "n" || typeOfSearch.ToLower() == "name")
@@ -290,9 +255,9 @@ namespace Monster_Manual_with_search
 
                 // Asking the user what type of armor they are searching for
                 Console.WriteLine("Which armor type do you want to display?");
-                for (int armorTypes = 0; armorTypes < armorTypesNames.Length; armorTypes++)
+                for (int armorTypesIndex = 0; armorTypesIndex < armorTypesNamesFormatted.Length; armorTypesIndex++)
                 {
-                    Console.WriteLine($"{armorTypes + 1}. {armorTypesNames[armorTypes]}");
+                    Console.WriteLine($"{armorTypesIndex + 1}. {armorTypesNamesFormatted[armorTypesIndex]}");
                 }
                 Console.WriteLine();
 
@@ -308,14 +273,15 @@ namespace Monster_Manual_with_search
                     // if the input is an integer, parse the number
                     if (Regex.IsMatch(armorTypeNumberString, @"^\d+$"))
                     {
-                        selectedArmorTypeNumber = Int32.Parse(armorTypeNumberString);
+                        int selectedArmorTypeNumber = Int32.Parse(armorTypeNumberString);
 
                         // if the number is on the list, continue
                         if (selectedArmorTypeNumber <= armorTypesNames.Length && selectedArmorTypeNumber > 0)
                         {
                             isANumber = true;
-                            string selectedArmorType = armorTypesNames[selectedArmorTypeNumber - 1];
-                            Console.WriteLine($"These are the monsters with {selectedArmorType.ToLower()} armor.");
+                            int selectedArmorTypeIndex = selectedArmorTypeNumber - 1;
+                            selectedArmorType = (ArmorType)selectedArmorTypeIndex;
+                            Console.WriteLine($"These are the monsters with {armorTypesNamesFormatted[selectedArmorTypeIndex].ToLower()} armor.");
                             continue;
                         }
                     }
@@ -369,7 +335,7 @@ namespace Monster_Manual_with_search
             // If the user is searching by armor type
             if (searchByArmorType)
             {
-                foreach (string monster in monstersSortedByArmorType[selectedArmorTypeNumber - 1])
+                foreach (string monster in monstersSortedByArmorType[selectedArmorType])
                 {
                     searchResult.Add(monster);
                 }
@@ -425,36 +391,32 @@ namespace Monster_Manual_with_search
             }
 
             // Variable with the name of the selected monster
-            string selectedMonster = searchResult[selectedMonsterNumber - 1];
+            string selectedMonsterName = searchResult[selectedMonsterNumber - 1];
 
             // Confirming choice
-            Console.WriteLine($"Displaying information for {selectedMonster}.\n");
+            Console.WriteLine($"Displaying information for {selectedMonsterName}.\n");
 
             // Finding the index of the monster
-            int selectedMonsterIndex = monsterNames.IndexOf(selectedMonster);
+            int selectedMonsterIndex = monsterNames.IndexOf(selectedMonsterName);
 
             // Displaying information about the selected monster
-            Console.WriteLine($"Name: {monsterEntries[selectedMonsterIndex].Name}");
-            Console.WriteLine($"Description: {monsterEntries[selectedMonsterIndex].Description}");
-            Console.WriteLine($"Alignment: {monsterEntries[selectedMonsterIndex].Alignment}");
-            Console.WriteLine($"Hit points: {monsterEntries[selectedMonsterIndex].HitPoints}");
-            Console.WriteLine($"Armor class: {monsterEntries[selectedMonsterIndex].Armor.Class}");
+            MonsterEntry selectedMonster = monsterEntries[selectedMonsterIndex];
+            Console.WriteLine($"Name: {selectedMonster.Name}");
+            Console.WriteLine($"Description: {selectedMonster.Description}");
+            Console.WriteLine($"Alignment: {selectedMonster.Alignment}");
+            Console.WriteLine($"Hit points: {selectedMonster.HitPoints}");
+            Console.WriteLine($"Armor class: {selectedMonster.Armor.Class}");
 
-            ArmorType armorTypeForSelectedMonster = ArmorType.Unspecified;
-            if (monsterEntries[selectedMonsterIndex].Armor.Type != "")
+            if (selectedMonster.Armor.Description != "")
             {
-                Console.WriteLine($"Armor type: {monsterEntries[selectedMonsterIndex].Armor.Type}");
-
-                if (!monstersSortedByArmorType[9].Contains(monsterEntries[selectedMonsterIndex].Name))
-                {
-                    armorTypeForSelectedMonster = (ArmorType)Enum.Parse(typeof(ArmorType), monsterEntries[selectedMonsterIndex].Armor.Type);
-                }
+                Console.WriteLine($"Armor type: {selectedMonster.Armor.Description}");
             }
 
-            if (armorTypeEntries.ContainsKey(armorTypeForSelectedMonster))
+            if (armorTypeEntries.ContainsKey(selectedMonster.Armor.Type))
             {
-                Console.WriteLine($"Armor category: {armorTypeEntries[armorTypeForSelectedMonster].Category}");
-                Console.WriteLine($"Armor weight: {armorTypeEntries[armorTypeForSelectedMonster].Weight} lb.");
+                ArmorTypeEntry selectedMonsterArmor = armorTypeEntries[selectedMonster.Armor.Type];
+                Console.WriteLine($"Armor category: {selectedMonsterArmor.Category}");
+                Console.WriteLine($"Armor weight: {selectedMonsterArmor.Weight} lb.");
             }
             Console.WriteLine();
         }
