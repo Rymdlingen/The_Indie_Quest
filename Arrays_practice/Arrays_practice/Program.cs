@@ -114,9 +114,10 @@ namespace Arrays_practice
             Console.WriteLine();
 
 
+
             // Assignment 2
 
-            // Creating an new array using the dimensions from earlier but in oposit positions.
+            // Creating an new 2D array using the dimensions from earlier but in oposit positions.
             int[,] twoDimensionalArrayTransposed = new int[dimension2Length, dimension1Length];
 
             // Adding the old numbers to new spots in the new array.
@@ -131,10 +132,67 @@ namespace Arrays_practice
             }
             Console.WriteLine();
 
+
+
             // Assignment 3
 
-            // Creating an array of size 10 by 10.
+            // Creating an 2D array of size 10 by 10.
             int[,] multiplication = new int[10, 10];
+
+            for (int dimension1 = 0; dimension1 < 10; dimension1++)
+            {
+                // First number of the multiplication.
+                int firstNumber = dimension1 + 1;
+
+                for (int dimension2 = 0; dimension2 < 10; dimension2++)
+                {
+                    // Second number of the multipliction.
+                    int secondNumber = dimension2 + 1;
+
+                    // Add sum of multiplication to array, and display the number.
+                    multiplication[dimension1, dimension2] = firstNumber * secondNumber;
+                    Console.Write(multiplication[dimension1, dimension2].ToString().PadRight(3, ' '));
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+
+
+            // Assignment 4
+
+            // Creating an 2D array with the size of a chessboard.
+            int[,] chessboard = new int[8, 8];
+
+            // Choose a random spot for the knight
+            int knightDimension1 = random.Next(0, chessboard.GetLength(0));
+            int knightDimension2 = random.Next(0, chessboard.GetLength(1));
+
+            // Set knights position
+            chessboard[knightDimension1, knightDimension2] = 0;
+
+            /*for (int dimension1 = 0; dimension1 < 10; dimension1++)
+            {
+
+                for (int dimension2 = 0; dimension2 < 10; dimension2++)
+                {
+                    if (chessboard[dimension1, dimension2] == chessboard[knightDimension1, knightDimension2])
+                    {
+
+                    }
+                }
+            }*/
         }
+
+        /*static int CalculateKnightMovement(int[,] chessboard, int dimension1, int dimension2, int turns = 0)
+        {
+            if (chessboard[dimension1, dimension2] != 0)
+            {
+                dimension1 += 2;
+                dimension2 += 1;
+                CalculateKnightMovement(chessboard, dimension1, dimension2);
+            }
+            return turns;
+        }*/
     }
 }
