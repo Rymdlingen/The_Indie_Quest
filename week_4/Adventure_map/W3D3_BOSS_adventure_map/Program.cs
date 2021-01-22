@@ -6,18 +6,25 @@ namespace W3D3_BOSS_adventure_map
     class Program
     {
 
+        // Method that first makes all the callculations based on the width and the height.
+        // Then the method draws the map to the console based on those callculations.
         static void DrawMap(int width, int height)
         {
+            // Addjusting the width and height values, to
             width = width - 1;
             height = height - 1;
+
+            // Used for resetting the x value to zero for every new line (new y value)
             int a = 0;
 
             var random = new Random();
+
+            // Symbols used for drawing the forest.
             string forestSymbol = "AT()&!Å";
 
-            //planning
 
-            //river
+            // Calculations.
+            // Start of calculating the rivers position.
             var riverList = new List<int> { };
             int riverLast = width - width / 4;
             riverList.Add(riverLast);
@@ -38,7 +45,7 @@ namespace W3D3_BOSS_adventure_map
             }
 
             riverList.Add(riverLast);
-            //river end
+            // End of calculating river.
 
             //road (h) start
             var roadList = new List<int> { };

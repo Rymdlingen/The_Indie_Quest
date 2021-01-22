@@ -5,29 +5,32 @@ namespace Bowling_game
 {
     class Program
     {
-        static string Pin(bool knocked)
+        // Returns a symbol for the pin based on if it is standing or not.
+        static string Pin(bool standing)
         {
-            // Returns a different symbol if the pin is standing or not
+            // Returns a different symbol if the pin is standing or knocked over.
             string symbol;
-            if (knocked == true)
+            if (standing == true)
             {
+                // Standing.
                 symbol = "O";
             }
             else
             {
+                // Knocked over.
                 symbol = " ";
             }
             return symbol;
         }
 
+        // Calculates how many pins get knocked down based of the list of standing pins and returns the number of knocked pins in this roll.
         static int KnockedPinOnPath(int path, List<bool> pinsStanding)
         {
-            // Calculates how many pins get knocked down
             var random = new Random();
 
             int knockedPinsCount = 0;
 
-            // Randomly changes path if the player dosent hit straight
+            // Randomly decides that player didn't roll straight and changes path.
             if (random.Next(10) == 0)
             {
                 path++;
@@ -38,19 +41,20 @@ namespace Bowling_game
                 path--;
             }
 
-            // Path 1
+            // Calculates the number of knocked pins on the choosen path based on how many pins are still standing in that path.
+            // Path 1.
             if (path == 1 && pinsStanding[6] == true)
             {
                 knockedPinsCount = 1;
                 pinsStanding[6] = false;
             }
-            // Path 2
+            // Path 2.
             else if (path == 2 && pinsStanding[3] == true)
             {
                 knockedPinsCount = 1;
                 pinsStanding[3] = false;
             }
-            // Path 3
+            // Path 3.
             else if (path == 3)
             {
                 if (pinsStanding[1] == true)
@@ -64,7 +68,7 @@ namespace Bowling_game
                     pinsStanding[7] = false;
                 }
             }
-            // Path 4
+            // Path 4.
             else if (path == 4)
             {
                 if (pinsStanding[0] == true)
@@ -78,7 +82,7 @@ namespace Bowling_game
                     pinsStanding[4] = false;
                 }
             }
-            // Path 5
+            // Path 5.
             else if (path == 5)
             {
                 if (pinsStanding[2] == true)
@@ -92,35 +96,39 @@ namespace Bowling_game
                     pinsStanding[8] = false;
                 }
             }
-            // Path 6
+            // Path 6.
             else if (path == 6 && pinsStanding[5] == true)
             {
                 knockedPinsCount = 1;
                 pinsStanding[5] = false;
             }
-            // Path 7
+            // Path 7.
             else if (path == 7 && pinsStanding[9] == true)
             {
                 knockedPinsCount = 1;
                 pinsStanding[9] = false;
             }
 
-            // If you hit a pin this part calculates if the pin or the ball hits more pins
+            // If you hit a pin this part calculates if the pin or the ball hits more pins.
             if (knockedPinsCount > 0)
             {
                 for (int pinAndBall = 0; pinAndBall < 2; pinAndBall++)
                 {
+                    // Randomly chooses with path the ball or pin takes.
                     int newPath = random.Next(5);
                     if (newPath < 2)
                     {
+                        // Path to the right.
                         knockedPinsCount += KnockedPinOnPath(path + 1, pinsStanding);
                     }
                     else if (newPath > 2)
                     {
+                        // Path to the left.
                         knockedPinsCount += KnockedPinOnPath(path - 1, pinsStanding);
                     }
                     else
                     {
+                        // Stays on the same path.
                         knockedPinsCount += KnockedPinOnPath(path, pinsStanding);
                     }
                 }
@@ -128,45 +136,47 @@ namespace Bowling_game
             return knockedPinsCount;
         }
 
+        // Draws the scoresheet with all scores.
         static void DrawScoreSheet(int[][] allRolls, int[] totalScore, string[][] rollText)
         {
 
             string totalScoreString = totalScore.ToString();
 
-            // LeftTop corner
+            // Symbols for the sheet.
+            // LeftTop corner.
             char topLeftCorner = '\u250F';
-            // RightTop corner
+            // RightTop corner.
             char topRightCorner = '\u2513';
-            // LeftBottom corner
+            // LeftBottom corner.
             char bottomLeftCorner = '\u2517';
-            // RightBottom corner
+            // RightBottom corner.
             char bottomRightCorner = '\u251B';
-            // TopBottom line
+            // TopBottom line.
             char horizentalLine = '\u2501';
-            // LeftRight line
+            // LeftRight line.
             char verticalLine = '\u2503';
-            // TopDown intersection
+            // TopDown intersection.
             char topDownLine = '\u2533';
-            // BottomUp intersection
+            // BottomUp intersection.
             char bottomUpLine = '\u253B';
-            // LineLeft intersection
+            // LineLeft intersection.
             char verticalLeftLine = '\u252B';
 
-
-
-
+            // Drawing loop.
             for (int drawingFrameRows = 0; drawingFrameRows < 5; drawingFrameRows++)
             {
-                // Top row
+                // Top row.
                 if (drawingFrameRows == 0)
                 {
+                    // Corner.
                     Console.Write(topLeftCorner);
 
+                    // Between corners.
                     for (int frames = 0; frames < allRolls.Length; frames++)
                     {
                         if (frames == 9)
                         {
-                            // for frame 10
+                            // For frame 10.
                             for (int frameSize = 0; frameSize < allRolls[frames].Length; frameSize++)
                             {
                                 Console.Write($"{horizentalLine}{topDownLine}");
@@ -174,6 +184,7 @@ namespace Bowling_game
                         }
                         else
                         {
+                            // Frame 1 - 9.
                             for (int frameSize = 0; frameSize <= allRolls[frames].Length; frameSize++)
                             {
                                 Console.Write($"{horizentalLine}{topDownLine}");
@@ -181,26 +192,30 @@ namespace Bowling_game
                         }
                     }
 
+                    // Corner.
                     Console.WriteLine($"{horizentalLine}{topRightCorner}");
                 }
-                // Second row
+                // Second row.
                 else if (drawingFrameRows == 1)
                 {
+                    // Left edge.
                     Console.Write($"{verticalLine} ");
 
+                    // Between edges.
                     for (int frames = 0; frames < allRolls.Length; frames++)
                     {
                         if (frames == 9)
                         {
-                            // for frame 10
+                            // For frame 10.
                             for (int frameSize = 0; frameSize < allRolls[frames].Length; frameSize++)
                             {
-                                // dont forget to add that if roll is -1 output space (if you get a strike)
+                                // Dont forget to add that if roll is -1 output space (if you get a strike)
                                 Console.Write($"{verticalLine}{rollText[frames][frameSize]}");
                             }
                         }
                         else
                         {
+                            // Frame 1 - 9.
                             for (int frameSize = 0; frameSize < allRolls[frames].Length; frameSize++)
                             {
                                 // dont forget to add that if roll is -1 output space (if you get a strike)
@@ -208,76 +223,91 @@ namespace Bowling_game
                             }
                         }
 
+                        // Right edge.
                         Console.Write($"{verticalLine} ");
                     }
                     Console.WriteLine();
                 }
-                // Third row
+                // Third row.
                 else if (drawingFrameRows == 2)
                 {
+                    // Left edge.
                     Console.Write($"{verticalLine}");
 
+                    // Between edges.
                     for (int frames = 0; frames < allRolls.Length; frames++)
                     {
                         if (frames == 9)
                         {
-                            // for frame 10
+                            // For frame 10.
                             Console.Write($" {bottomLeftCorner}{horizentalLine}{bottomUpLine}{horizentalLine}{bottomUpLine}{horizentalLine}{verticalLeftLine}");
                         }
                         else
                         {
+                            // Frame 1 - 9.
                             Console.Write($" {bottomLeftCorner}{horizentalLine}{bottomUpLine}{horizentalLine}{verticalLeftLine}");
                         }
                     }
+
+                    // Right edge.
                     Console.WriteLine();
                 }
-                // Fourth row
+                // Fourth row.
                 else if (drawingFrameRows == 3)
                 {
+                    // Left edge.
                     Console.Write($"{verticalLine}");
 
+                    // Between edges.
                     for (int frames = 0; frames < allRolls.Length; frames++)
                     {
                         if (totalScore[frames] > -1)
                         {
+                            // Frames with score.
                             if (frames == 9)
                             {
-                                // for frame 10
+                                // For frame 10.
                                 Console.Write($"{$"{totalScore[frames]}  ",7}{verticalLine}");
 
                             }
                             else
                             {
+                                // Frame 1 - 9.
                                 Console.Write($"{$"{totalScore[frames]} ",5}{verticalLine}");
                             }
                         }
                         else
                         {
+                            // Empty frames.
                             if (frames == 9)
                             {
-                                // for frame 10
+                                // For frame 10.
                                 Console.Write($"       {verticalLine}");
 
                             }
                             else
                             {
+                                // Frame 1 - 9.
                                 Console.Write($"     {verticalLine}");
                             }
                         }
 
                     }
+                    // Right edge.
                     Console.WriteLine();
                 }
+                // Bottom row.
                 else
                 {
-                    // Bottom row
+                    // Corner.
                     Console.Write(bottomLeftCorner);
 
+                    // Between corners.
                     for (int frames = 0; frames < allRolls.Length; frames++)
                     {
                         if (frames == 9)
                         {
-                            // for frame 10
+                            // For frame 10.
                             for (int frameSize = 0; frameSize < allRolls[frames].Length; frameSize++)
                             {
                                 Console.Write($"{horizentalLine}{horizentalLine}");
@@ -285,6 +315,7 @@ namespace Bowling_game
                         }
                         else
                         {
+                            // Frame 1 - 9.
                             for (int frameSize = 0; frameSize <= allRolls[frames].Length - 1; frameSize++)
                             {
                                 Console.Write($"{horizentalLine}{horizentalLine}");
@@ -292,11 +323,13 @@ namespace Bowling_game
                             Console.Write($"{horizentalLine}{bottomUpLine}");
                         }
                     }
+                    // Between corners.
                     Console.WriteLine($"{horizentalLine}{bottomRightCorner}");
                 }
             }
         }
 
+        // Draws the pins based on the list of standning pins.
         static void DrawPins(List<bool> allPinsStanding)
         {
             Console.WriteLine("\nCurrent pins:\n");
@@ -310,7 +343,7 @@ namespace Bowling_game
 
         static void Main(string[] args)
         {
-            // Creating an array of 10 rolls with all rolls set to - 1
+            // Creating an jagged array of 10 rolls with all roll scores set to - 1 (not rolled yet).
             int[][] allRolls = new int[10][];
             {
                 int frame = 0;
@@ -324,7 +357,7 @@ namespace Bowling_game
                 allRolls[frame - 1] = new int[] { -1, -1, -1 };
             }
 
-            // Creating an array of 10 text outputs for displaying number of hits
+            // Creating an jagged array of 10 text outputs for displaying number of hits for each roll.
             string[][] rollText = new string[10][];
             {
                 int frame = 0;
@@ -338,9 +371,10 @@ namespace Bowling_game
                 rollText[frame - 1] = new string[] { " ", " ", " " };
             }
 
-            // Arrays for calculating gained points for each frame
+            // Arrays for calculating gained points for each frame.
             int[] pointsGained = new int[10];
             int[] frameScores = new int[10];
+            // Setting all scores to -1 for a start.
             for (int i = 0; i < 10; i++)
             {
                 pointsGained[i] = -1;
@@ -353,6 +387,7 @@ namespace Bowling_game
             string roll3Text;
             int frames = 0;
 
+            // Game loop.
             while (frames < 10)
             {
                 var allPinsStanding = new List<bool> { true, true, true, true, true, true, true, true, true, true };
@@ -360,224 +395,224 @@ namespace Bowling_game
                 bool spare = false;
                 bool thirdRoll = false;
 
-                //Loop for displaying the frame and pins three times
+                // Loop for displaying the frame and pins three times.
                 for (int rolls = 0; rolls < 4; rolls++)
                 {
-                    //Rolls in 10th frame
+                    // Rolls in 10th frame.
                     if (frames == 9 && rolls > 0)
                     {
-                        //First roll
+                        // First roll.
                         if (rolls == 1)
                         {
-                            // symbol for a miss
+                            // Symbol for a miss.
                             if (allRolls[frames][rolls - 1] == 0)
                             {
                                 roll1Text = "-";
-                            } // symbol for a strike
+                            } // Symbol for a strike.
                             else if (allRolls[frames][rolls - 1] == 10)
                             {
                                 roll1Text = "X";
                                 strike = true;
                                 thirdRoll = true;
-                            } // outputing the number of pins if you don't miss or get a strike
+                            } // Outputing the number of pins if you don't miss or get a strike.
                             else
                             {
                                 roll1Text = $"{allRolls[frames][rolls - 1]}";
                             }
 
-                            // moving the symbol or number to the rollText array
+                            // Moving the symbol or number to the rollText array.
                             rollText[frames][rolls - 1] = roll1Text;
                         }
 
-                        //Second roll
+                        // Second roll.
                         if (rolls == 2)
                         {
                             if (allRolls[frames][rolls - 2] < 10)
                             {
-                                // symbol for a miss
+                                // Symbol for a miss.
                                 if (allRolls[frames][rolls - 1] == 0)
                                 {
                                     roll2Text = "-";
-                                } // symbol for a spare
+                                } // Symbol for a spare.
                                 else if (allRolls[frames][rolls - 2] + allRolls[frames][rolls - 1] == 10)
                                 {
                                     roll2Text = "/";
                                     spare = true;
                                     thirdRoll = true;
-                                } // outputing the number of pins if you don't miss or get a spare
+                                } // Outputing the number of pins if you don't miss or get a spare.
                                 else
                                 {
                                     roll2Text = $"{allRolls[frames][rolls - 1]}";
                                 }
 
-                                // moving the symbol or number to the rollText array
+                                // Moving the symbol or number to the rollText array.
                                 rollText[frames][rolls - 1] = roll2Text;
                             }
                             else
                             {
-                                // symbol for a miss
+                                // Symbol for a miss.
                                 if (allRolls[frames][rolls - 1] == 0)
                                 {
                                     roll2Text = "-";
-                                } // symbol for a strike
+                                } // Symbol for a strike.
                                 else if (allRolls[frames][rolls - 1] == 10)
                                 {
                                     roll2Text = "X";
                                     strike = true;
-                                } // outputing the number of pins if you don't miss or get a strike
+                                } // Outputing the number of pins if you don't miss or get a strike.
                                 else
                                 {
                                     roll2Text = $"{allRolls[frames][rolls - 1]}";
                                 }
 
-                                // moving the symbol or number to the rollText array
+                                // Moving the symbol or number to the rollText array.
                                 rollText[frames][rolls - 1] = roll2Text;
                             }
                         }
 
-                        //Third roll
+                        // Third roll.
                         if (rolls == 3)
                         {
-                            // symbol for a miss
+                            // Symbol for a miss.
                             if (allRolls[frames][rolls - 1] == 0)
                             {
                                 roll3Text = "-";
-                            } // symbol for a spare
+                            } // Symbol for a spare.
                             else if (allRolls[frames][0] == 10 && allRolls[frames][rolls - 2] + allRolls[frames][rolls - 1] == 10)
                             {
                                 roll3Text = "/";
-                            } // symbol for a strike
+                            } // Symbol for a strike.
                             else if (allRolls[frames][rolls - 1] == 10)
                             {
                                 roll3Text = "X";
-                            } // outputing the number of pins if you don't miss or get a strike or a spare
+                            } // Outputing the number of pins if you don't miss or get a strike or a spare.
                             else
                             {
                                 roll3Text = $"{allRolls[frames][rolls - 1]}";
                             }
 
-                            // moving the symbol or number to the rollText array
+                            // Moving the symbol or number to the rollText array.
                             rollText[frames][rolls - 1] = roll3Text;
                         }
                     }
-                    //Rolls in all other frames
+                    // Rolls in all other frames.
                     else
                     {
-                        //First roll
+                        // First roll.
                         if (rolls == 1)
                         {
-                            // symbol for a miss
+                            // Symbol for a miss.
                             if (allRolls[frames][rolls - 1] == 0)
                             {
                                 roll1Text = "-";
-                            } // symbol for a strike
+                            } // Symbol for a strike.
                             else if (allRolls[frames][rolls - 1] == 10)
                             {
                                 roll1Text = "X";
                                 strike = true;
-                            } // outputing the number of pins if you don't miss or get a strike
+                            } // Outputing the number of pins if you don't miss or get a strike.
                             else
                             {
                                 roll1Text = $"{allRolls[frames][rolls - 1]}";
                             }
 
-                            // moving the symbol or number to the rollText array
+                            // Moving the symbol or number to the rollText array.
                             rollText[frames][rolls - 1] = roll1Text;
                         }
 
-                        //Second roll
+                        // Second roll.
                         if (rolls == 2 && allRolls[frames][rolls - 2] < 10)
                         {
-                            // symbol for a miss
+                            // Symbol for a miss.
                             if (allRolls[frames][rolls - 1] == 0)
                             {
                                 roll2Text = "-";
-                            } // symbol for a spare
+                            } // Symbol for a spare.
                             else if (allRolls[frames][rolls - 2] + allRolls[frames][rolls - 1] == 10)
                             {
                                 roll2Text = "/";
-                            } // outputing the number of pins if you don't miss or get a spare
+                            } // Outputing the number of pins if you don't miss or get a spare.
                             else
                             {
                                 roll2Text = $"{allRolls[frames][rolls - 1]}";
                             }
 
-                            // moving the symbol or number to the rollText array
+                            // Moving the symbol or number to the rollText array.
                             rollText[frames][rolls - 1] = roll2Text;
                         }
                     }
 
-                    // Calculate score
+                    // Calculate score.
                     if (rolls > 0)
                     {
-                        // strike and then strike again
+                        // Strike and then strike again.
                         if (frames > 1 && rolls == 1 && allRolls[frames - 2][0] == 10 && allRolls[frames - 1][0] == 10)
                         {
                             pointsGained[frames - 2] = allRolls[frames - 2][0] + allRolls[frames - 1][0] + allRolls[frames][0];
                             frameScores[frames - 2] = pointsGained[frames - 2];
 
-                            // adds the previous frames score if this is not the first frame
+                            // Adds the previous frames score if this is not the first frame.
                             if (frames > 2)
                             {
                                 frameScores[frames - 2] += frameScores[frames - 3];
                             }
                         }
 
-                        // if you roll multiple strikes in a row in the 10th frame
+                        // If you roll multiple strikes in a row in the 10th frame.
                         if (frames == 9 && rolls == 2 && allRolls[frames - 1][0] == 10 && allRolls[frames][0] == 10)
                         {
                             pointsGained[frames - 1] = allRolls[frames - 1][0] + allRolls[frames][0] + allRolls[frames][1];
                             frameScores[frames - 1] = frameScores[frames - 2] + pointsGained[frames - 1];
                         }
 
-                        // strike and then not a strike
+                        // Strike and then not a strike.
                         if (frames > 0 && rolls > 1 && allRolls[frames - 1][0] == 10 && allRolls[frames][0] < 10)
                         {
                             pointsGained[frames - 1] = allRolls[frames - 1][0] + allRolls[frames][0] + allRolls[frames][1];
                             frameScores[frames - 1] = pointsGained[frames - 1];
 
-                            // adds the previous frames score if this is not the first frame
+                            // Adds the previous frames score if this is not the first frame.
                             if (frames > 1)
                             {
                                 frameScores[frames - 1] += frameScores[frames - 2];
                             }
                         }
 
-                        // if you roll a spare
+                        // If you roll a spare.
                         if (frames > 0 && rolls < 2 && allRolls[frames - 1][0] + allRolls[frames - 1][1] == 10)
                         {
                             pointsGained[frames - 1] = 10 + allRolls[frames][0];
                             frameScores[frames - 1] = pointsGained[frames - 1];
 
-                            // adds the previous frames score if this is not the first frame
+                            // Adds the previous frames score if this is not the first frame.
                             if (frames > 1)
                             {
                                 frameScores[frames - 1] += frameScores[frames - 2];
                             }
                         }
 
-                        // no strike, no spare
+                        // No strike, no spare.
                         if (frames < 9 && rolls > 1 && allRolls[frames][0] + allRolls[frames][1] < 10)
                         {
                             pointsGained[frames] = allRolls[frames][0] + allRolls[frames][1];
                             frameScores[frames] = pointsGained[frames];
 
-                            // adds the previous frames score if this is not the first frame
+                            // Adds the previous frames score if this is not the first frame.
                             if (frames > 0)
                             {
                                 frameScores[frames] += frameScores[frames - 1];
                             }
                         }
 
-                        // for frame 10
+                        // For frame 10.
                         if (frames == 9)
                         {
-                            // if you get a third roll, adds the points to the score after the third roll
+                            // If you get a third roll, adds the points to the score after the third roll.
                             if (thirdRoll && rolls > 2)
                             {
                                 pointsGained[frames] = allRolls[frames][0] + allRolls[frames][1] + allRolls[frames][2];
                                 frameScores[frames] = frameScores[frames - 1] + pointsGained[frames];
-                            } // if you don't get a third roll, adds the points to the score after the second roll
+                            } // If you don't get a third roll, adds the points to the score after the second roll.
                             else if (!thirdRoll && rolls > 1)
                             {
                                 pointsGained[frames] = allRolls[frames][0] + allRolls[frames][1];
@@ -586,25 +621,25 @@ namespace Bowling_game
                         }
                     }
 
-                    //Drawing the pins
+                    // Drawing the pins.
                     Console.WriteLine($"Frame: {frames + 1}");
                     DrawScoreSheet(allRolls, frameScores, rollText);
                     DrawPins(allPinsStanding);
 
-                    // Marking the choosen path
+                    // Marking the choosen path.
                     if (rolls > 0)
                     {
                         Console.Write($"{"".PadLeft((path - 1) * 2, ' ')}^");
                     }
 
-                    // Asking for player to choose path
-                    // For frame 10
+                    // Asking for player to choose path.
+                    // For frame 10.
                     if (frames == 9)
                     {
-                        // The first two rolls of the 10th frame
+                        // The first two rolls of the 10th frame.
                         if (rolls < 2)
                         {
-                            // If you rolled a strike in the first roll this resets the pins
+                            // If you rolled a strike in the first roll this resets the pins.
                             if (strike)
                             {
                                 allPinsStanding = new List<bool> { true, true, true, true, true, true, true, true, true, true };
@@ -616,14 +651,14 @@ namespace Bowling_game
                                 DrawPins(allPinsStanding);
                             }
 
-                            // rewriting asking for path 
+                            // Rewriting asking for path.
                             Console.CursorTop = 18;
                             Console.Write($"\n                                                  ");
                             Console.CursorTop = 18;
                             Console.Write($"\nEnter where you roll the ball (1-7): ");
                             string choosenPath = Console.ReadLine();
 
-                            // If player just press enter, ask for path again
+                            // If player just press enter, ask for path again.
                             while (choosenPath == "")
                             {
                                 Console.CursorLeft = 0;
@@ -633,10 +668,10 @@ namespace Bowling_game
                                 choosenPath = Console.ReadLine();
                             }
                             path = Int32.Parse(choosenPath);
-                        } // if you get to roll a third time
+                        } // If you get to roll a third time.
                         else if (thirdRoll && rolls == 2)
                         {
-                            // If you rolled a strike or a spare in the second roll this resets the pins
+                            // If you rolled a strike or a spare in the second roll this resets the pins.
                             if (strike || spare)
                             {
                                 allPinsStanding = new List<bool> { true, true, true, true, true, true, true, true, true, true };
@@ -649,14 +684,14 @@ namespace Bowling_game
                                 DrawPins(allPinsStanding);
                             }
 
-                            // rewriting asking for path 
+                            // Rewriting asking for path.
                             Console.CursorTop = 18;
                             Console.Write($"\n                                                  ");
                             Console.CursorTop = 18;
                             Console.Write($"\nEnter where you roll the ball (1-7): ");
                             string choosenPath = Console.ReadLine();
 
-                            // If player just press enter, ask for path again
+                            // If player just press enter, ask for path again.
                             while (choosenPath == "")
                             {
                                 Console.CursorLeft = 0;
@@ -666,7 +701,7 @@ namespace Bowling_game
                                 choosenPath = Console.ReadLine();
                             }
                             path = Int32.Parse(choosenPath);
-                        } // After two or three rolls, reset bowlinglane
+                        } // After two or three rolls, reset bowlinglane.
                         else
                         {
                             Console.Write("\nPress enter to continue.");
@@ -675,14 +710,14 @@ namespace Bowling_game
                             break;
                         }
                     }
-                    // For all other frames
+                    // For all other frames.
                     else if (rolls < 2 && strike == false)
                     {
-                        // Asking player to choose path
+                        // Asking player to choose path.
                         Console.Write($"\nEnter where you roll the ball (1-7): ");
                         string choosenPath = Console.ReadLine();
 
-                        // If player just press enter, ask for path again
+                        // If player just press enter, ask for path again.
                         while (choosenPath == "")
                         {
                             Console.CursorLeft = 0;
@@ -692,7 +727,7 @@ namespace Bowling_game
                             choosenPath = Console.ReadLine();
                         }
                         path = Int32.Parse(choosenPath);
-                    } // After two rolls, reset bowlinglane
+                    } // After two rolls, reset bowlinglane.
                     else
                     {
                         Console.Write("\nPress enter to continue.");
@@ -702,19 +737,19 @@ namespace Bowling_game
                         break;
                     }
 
-                    // Calculate number of pins that get knocked down in roll 1
+                    // Calculate number of pins that get knocked down in roll 1.
                     if (rolls == 0)
                     {
                         allRolls[frames][rolls] = KnockedPinOnPath(path, allPinsStanding);
                     }
 
-                    // Calculate number of pins that get knocked down in roll 2
+                    // Calculate number of pins that get knocked down in roll 2.
                     if (rolls == 1)
                     {
                         allRolls[frames][rolls] = KnockedPinOnPath(path, allPinsStanding);
                     }
 
-                    // Calculate number of pins that get knocked down in roll 3
+                    // Calculate number of pins that get knocked down in roll 3.
                     if (rolls == 2)
                     {
                         allRolls[frames][rolls] = KnockedPinOnPath(path, allPinsStanding);
@@ -723,14 +758,13 @@ namespace Bowling_game
                     Console.Clear();
                 }
 
-                // Reset the frame
-                /*roll1Text = " ";
-                roll2Text = " ";
-                */
+                // Next frame!
                 frames++;
             }
 
+            // Draw the scoresheet.
             DrawScoreSheet(allRolls, frameScores, rollText);
+            // Display the total score.
             Console.WriteLine($"Well played! Your total score is: {frameScores[frames - 1]}!");
         }
     }
